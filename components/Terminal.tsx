@@ -8,6 +8,35 @@ interface TerminalProps {
   onCustomize: (target: keyof Customization, color: string) => void;
 }
 
+const levenshteinDistance = (a: string, b: string): number => {
+    const m = a.length;
+    const n = b.length;
+    if (m === 0) return n;
+    if (n === 0) return m;
+
+    const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(null));
+
+    for (let i = 0; i <= m; i++) {
+        dp[i][0] = i;
+    }
+    for (let j = 0; j <= n; j++) {
+        dp[0][j] = j;
+    }
+
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            const cost = a[i - 1].toLowerCase() === b[j - 1].toLowerCase() ? 0 : 1;
+            dp[i][j] = Math.min(
+                dp[i - 1][j] + 1,      // Deletion
+                dp[i][j - 1] + 1,      // Insertion
+                dp[i - 1][j - 1] + cost // Substitution
+            );
+        }
+    }
+    return dp[m][n];
+};
+
+
 const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize }) => {
   const [history, setHistory] = useState<OutputLine[]>([]);
   const [input, setInput] = useState('');
@@ -53,9 +82,8 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
     const commandParts = commandStr.trim().split(/\s+/);
     const command = commandParts[0].toLowerCase();
     const args = commandParts.slice(1);
-    let output: React.ReactNode = `Error: command not found: ${command}. Type 'help' for a list of commands.`;
+    let output: React.ReactNode = null;
 
-    // Handle multi-word commands
     const fullCommand = commandStr.trim().toLowerCase();
 
     switch (fullCommand) {
@@ -244,7 +272,6 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
         break;
         
       default:
-        // Handle commands with arguments
         switch(command) {
           case 'upload':
             if (args[0]?.toLowerCase() === 'picture') {
@@ -291,24 +318,39 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
           
             if (Object.keys(personalFieldMap).includes(fieldLower)) {
               const keyToUpdate = personalFieldMap[fieldLower];
-              setData(prev => ({
-                ...prev,
-                personal: { ...prev.personal, [keyToUpdate]: value }
-              }));
+              setData(prev => ({ ...prev, personal: { ...prev.personal, [keyToUpdate]: value } }));
               updated = true;
             } else if (Object.keys(contactFieldMap).includes(fieldLower)) {
               const keyToUpdate = contactFieldMap[fieldLower];
-              setData(prev => ({
-                ...prev,
-                contact_info: { ...prev.contact_info, [keyToUpdate]: value }
-              }));
+              setData(prev => ({ ...prev, contact_info: { ...prev.contact_info, [keyToUpdate]: value } }));
               updated = true;
             }
           
             if (updated) {
               output = `Success: '${field}' updated to '${value}'.`;
             } else {
-              output = `Error: Field '${field}' not found. Available fields: name, title, nationality, dob, gender, status, mobile, email, location.`;
+              const validFields = [...Object.keys(personalFieldMap), ...Object.keys(contactFieldMap)];
+              let bestMatch: string | null = null;
+              let minDistance = 3;
+
+              for (const validField of validFields) {
+                const distance = levenshteinDistance(fieldLower, validField);
+                if (distance < minDistance) {
+                  minDistance = distance;
+                  bestMatch = validField;
+                }
+              }
+
+              if (bestMatch) {
+                output = (
+                  <div>
+                    <p>Error: Invalid field '{field}'.</p>
+                    <p>Try this: <span className="text-white block mt-1">{`set ${bestMatch} ${value}`}</span></p>
+                  </div>
+                );
+              } else {
+                output = `Error: Field '${field}' not found. Available fields: name, title, nationality, dob, gender, status, mobile, email, location.`;
+              }
             }
             break;
           
@@ -373,6 +415,36 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
               output = `cat: ${fileName}: No such file or directory`;
             }
             break;
+        }
+    }
+    
+    if (output === null) {
+        const ALL_COMMANDS = [
+            'help', 'help me', 'summary', 'contact', 'socials', 'about', 'experience', 'exp', 'skills',
+            'set', 'upload', 'download', 'clear', 'whoami', 'ipconfig', 'hostname', 'date',
+            'echo', 'ping', 'ls', 'cat', 'neofetch', 'customize', 'exit', 'karthi'
+        ];
+        let suggestion: string | null = null;
+        let minDistance = 3; // Threshold: suggest if distance is 1 or 2
+
+        for (const cmd of ALL_COMMANDS) {
+            const distance = levenshteinDistance(command, cmd);
+            if (distance < minDistance) {
+                minDistance = distance;
+                suggestion = cmd;
+            }
+        }
+        
+        if (suggestion) {
+            const remainingArgs = args.join(' ');
+            output = (
+               <div>
+                   <p>{`Error: command not found: ${command}`}</p>
+                   <p>{`Did you mean: `}<span className="text-white">{suggestion}{remainingArgs ? ' ' + remainingArgs : ''}</span>{`?`}</p>
+               </div>
+            );
+        } else {
+            output = `Error: command not found: ${command}. Type 'help' for a list of commands.`;
         }
     }
     
