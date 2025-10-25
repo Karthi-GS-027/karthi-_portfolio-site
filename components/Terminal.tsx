@@ -209,7 +209,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
         <div ref={terminalEndRef} />
       </div>
       <div className="flex items-center mt-2 flex-shrink-0">
-        <span className="text-green-400 mr-2">{userName}&gt;</span>
+        <span className="text-green-400 mr-2">{`${userName}>`}</span>
         <input
           ref={inputRef}
           type="text"
