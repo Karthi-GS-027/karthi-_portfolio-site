@@ -55,7 +55,14 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
     const args = commandParts.slice(1);
     let output: React.ReactNode = `Error: command not found: ${command}. Type 'help' for a list of commands.`;
 
-    switch (command) {
+    // Handle multi-word commands
+    const fullCommand = commandStr.trim().toLowerCase();
+
+    switch (fullCommand) {
+      case 'karthi':
+        output = "That's my name! To see what you can do, type 'help'.";
+        break;
+
       case 'whoami':
         output = (
           <div>
@@ -67,6 +74,24 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
       
       case 'help':
         output = (
+          <div>
+            <p className="mb-2">Here are the essential commands to get started:</p>
+            <ul className="list-inside grid grid-cols-2 gap-x-4">
+              <li><span className="text-white w-28 inline-block">summary</span>- Brief summary.</li>
+              <li><span className="text-white w-28 inline-block">about</span>- Personal details.</li>
+              <li><span className="text-white w-28 inline-block">skills</span>- Technical skills.</li>
+              <li><span className="text-white w-28 inline-block">download</span>- Download resume.</li>
+              <li><span className="text-white w-28 inline-block">socials</span>- Social media links.</li>
+              <li><span className="text-white w-28 inline-block">experience</span>- Work experience.</li>
+              <li><span className="text-white w-28 inline-block">contact</span>- Contact info.</li>
+            </ul>
+            <p className="mt-2">For a full list of all commands, type '<span className="text-white">help me</span>'.</p>
+          </div>
+        );
+        break;
+
+      case 'help me':
+         output = (
           <ul className="list-inside grid grid-cols-2 gap-x-4">
             <li><span className="text-white w-28 inline-block">summary</span>- Brief summary.</li>
             <li><span className="text-white w-28 inline-block">contact</span>- Contact info.</li>
@@ -170,130 +195,17 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
         document.body.removeChild(link);
         output = "Success: Download initiated for Karthi-Resume.pdf...";
         break;
-
-      case 'upload':
-        if (args[0]?.toLowerCase() === 'picture') {
-          output = (
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="bg-green-500/20 hover:bg-green-500/40 border border-green-500 text-white font-bold py-1 px-3 rounded transition-colors duration-300"
-            >
-              Choose File...
-            </button>
-          );
-        } else {
-          output = `Usage: upload picture`;
-        }
-        break;
       
       case 'clear':
         setHistory([]);
         return;
         
-      case 'set':
-        const [field, ...valueParts] = args;
-        const value = valueParts.join(' ');
-      
-        if (!field || !value) {
-          output = 'Usage: set <field> <value>. Example: set title Senior Developer';
-          break;
-        }
-      
-        const fieldLower = field.toLowerCase();
-        let updated = false;
-      
-        const personalFieldMap: { [key: string]: keyof PersonalData } = {
-          'name': 'Name',
-          'title': 'title',
-          'nationality': 'Nationality',
-          'dob': 'Date of Birth',
-          'gender': 'Gender',
-          'status': 'Marital Status'
-        };
-      
-        const contactFieldMap: { [key: string]: keyof ContactInfo } = {
-          'mobile': 'Mobile',
-          'phone': 'Mobile',
-          'email': 'Email',
-          'location': 'Location'
-        };
-      
-        if (Object.keys(personalFieldMap).includes(fieldLower)) {
-          const keyToUpdate = personalFieldMap[fieldLower];
-          setData(prev => ({
-            ...prev,
-            personal: { ...prev.personal, [keyToUpdate]: value }
-          }));
-          updated = true;
-        } else if (Object.keys(contactFieldMap).includes(fieldLower)) {
-          const keyToUpdate = contactFieldMap[fieldLower];
-          setData(prev => ({
-            ...prev,
-            contact_info: { ...prev.contact_info, [keyToUpdate]: value }
-          }));
-          updated = true;
-        }
-      
-        if (updated) {
-          output = `Success: '${field}' updated to '${value}'.`;
-        } else {
-          output = `Error: Field '${field}' not found. Available fields: name, title, nationality, dob, gender, status, mobile, email, location.`;
-        }
-        break;
-      
-      case 'customize':
-        const [target, color] = args;
-        const validTargets = ['outline', 'text', 'link', 'accent'];
-        if (!target || !color) {
-          output = (
-            <div>
-              <p>Usage: customize &lt;target&gt; &lt;color&gt;</p>
-              <p>Example: customize outline hotpink</p>
-              <p>Available targets: {validTargets.join(', ')}</p>
-              <p>Color can be a name (e.g., red), hex (e.g., #FF0000), or rgb.</p>
-            </div>
-          );
-        } else if (validTargets.includes(target.toLowerCase())) {
-          onCustomize(target.toLowerCase() as keyof Customization, color);
-          output = `Success: '${target}' color set to '${color}'.`;
-        } else {
-          output = `Error: Invalid target '${target}'. Available targets: ${validTargets.join(', ')}.`;
-        }
-        break;
-
-      case 'ipconfig':
-        output = (
-          <div>
-            <p>Network Interface Card:</p>
-            <p className="pl-4">IPv4 Address: 192.168.1.101</p>
-            <p className="pl-4">Subnet Mask: 255.255.255.0</p>
-            <p className="pl-4">Default Gateway: 192.168.1.1</p>
-          </div>
-        );
-        break;
-
       case 'hostname':
         output = 'portfolio-server-01';
         break;
 
       case 'date':
         output = new Date().toLocaleString();
-        break;
-
-      case 'echo':
-        output = args.join(' ');
-        break;
-
-      case 'ping':
-        const host = args[0] || 'localhost';
-        output = (
-          <div>
-            <p>Pinging {host} with 32 bytes of data:</p>
-            <p>Reply from {host}: bytes=32 time=1ms TTL=128</p>
-            <p>Reply from {host}: bytes=32 time=1ms TTL=128</p>
-            <p>Reply from {host}: bytes=32 time=1ms TTL=128</p>
-          </div>
-        );
         break;
         
       case 'ls':
@@ -306,21 +218,6 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
             <span>skills.json</span>
           </div>
         );
-        break;
-        
-      case 'cat':
-        const fileName = args[0];
-        if (!fileName) {
-          output = 'Usage: cat [filename]. Try "cat about.txt"';
-        } else if (fileName === 'about.txt') {
-          processCommand('about');
-          return;
-        } else if (fileName === 'contact.txt') {
-          processCommand('contact');
-          return;
-        } else {
-          output = `cat: ${fileName}: No such file or directory`;
-        }
         break;
         
       case 'neofetch':
@@ -345,6 +242,138 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
       case 'exit':
         output = 'Thank you for visiting. Have a great day!';
         break;
+        
+      default:
+        // Handle commands with arguments
+        switch(command) {
+          case 'upload':
+            if (args[0]?.toLowerCase() === 'picture') {
+              output = (
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="bg-green-500/20 hover:bg-green-500/40 border border-green-500 text-white font-bold py-1 px-3 rounded transition-colors duration-300"
+                >
+                  Choose File...
+                </button>
+              );
+            } else {
+              output = `Usage: upload picture`;
+            }
+            break;
+          
+          case 'set':
+            const [field, ...valueParts] = args;
+            const value = valueParts.join(' ');
+          
+            if (!field || !value) {
+              output = 'Usage: set <field> <value>. Example: set title Senior Developer';
+              break;
+            }
+          
+            const fieldLower = field.toLowerCase();
+            let updated = false;
+          
+            const personalFieldMap: { [key: string]: keyof PersonalData } = {
+              'name': 'Name',
+              'title': 'title',
+              'nationality': 'Nationality',
+              'dob': 'Date of Birth',
+              'gender': 'Gender',
+              'status': 'Marital Status'
+            };
+          
+            const contactFieldMap: { [key: string]: keyof ContactInfo } = {
+              'mobile': 'Mobile',
+              'phone': 'Mobile',
+              'email': 'Email',
+              'location': 'Location'
+            };
+          
+            if (Object.keys(personalFieldMap).includes(fieldLower)) {
+              const keyToUpdate = personalFieldMap[fieldLower];
+              setData(prev => ({
+                ...prev,
+                personal: { ...prev.personal, [keyToUpdate]: value }
+              }));
+              updated = true;
+            } else if (Object.keys(contactFieldMap).includes(fieldLower)) {
+              const keyToUpdate = contactFieldMap[fieldLower];
+              setData(prev => ({
+                ...prev,
+                contact_info: { ...prev.contact_info, [keyToUpdate]: value }
+              }));
+              updated = true;
+            }
+          
+            if (updated) {
+              output = `Success: '${field}' updated to '${value}'.`;
+            } else {
+              output = `Error: Field '${field}' not found. Available fields: name, title, nationality, dob, gender, status, mobile, email, location.`;
+            }
+            break;
+          
+          case 'customize':
+            const [target, color] = args;
+            const validTargets = ['outline', 'text', 'link', 'accent'];
+            if (!target || !color) {
+              output = (
+                <div>
+                  <p>Usage: customize &lt;target&gt; &lt;color&gt;</p>
+                  <p>Example: customize outline hotpink</p>
+                  <p>Available targets: {validTargets.join(', ')}</p>
+                  <p>Color can be a name (e.g., red), hex (e.g., #FF0000), or rgb.</p>
+                </div>
+              );
+            } else if (validTargets.includes(target.toLowerCase())) {
+              onCustomize(target.toLowerCase() as keyof Customization, color);
+              output = `Success: '${target}' color set to '${color}'.`;
+            } else {
+              output = `Error: Invalid target '${target}'. Available targets: ${validTargets.join(', ')}.`;
+            }
+            break;
+
+          case 'ipconfig':
+            output = (
+              <div>
+                <p>Network Interface Card:</p>
+                <p className="pl-4">IPv4 Address: 192.168.1.101</p>
+                <p className="pl-4">Subnet Mask: 255.255.255.0</p>
+                <p className="pl-4">Default Gateway: 192.168.1.1</p>
+              </div>
+            );
+            break;
+
+          case 'echo':
+            output = args.join(' ');
+            break;
+
+          case 'ping':
+            const host = args[0] || 'localhost';
+            output = (
+              <div>
+                <p>Pinging {host} with 32 bytes of data:</p>
+                <p>Reply from {host}: bytes=32 time=1ms TTL=128</p>
+                <p>Reply from {host}: bytes=32 time=1ms TTL=128</p>
+                <p>Reply from {host}: bytes=32 time=1ms TTL=128</p>
+              </div>
+            );
+            break;
+            
+          case 'cat':
+            const fileName = args[0];
+            if (!fileName) {
+              output = 'Usage: cat [filename]. Try "cat about.txt"';
+            } else if (fileName === 'about.txt') {
+              processCommand('about');
+              return;
+            } else if (fileName === 'contact.txt') {
+              processCommand('contact');
+              return;
+            } else {
+              output = `cat: ${fileName}: No such file or directory`;
+            }
+            break;
+        }
     }
     
     newHistory.push({ type: 'output', content: output });
