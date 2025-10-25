@@ -26,3 +26,10 @@ export interface OutputLine {
   type: 'input' | 'output';
   content: React.ReactNode;
 }
+
+export interface Customization {
+  outline: string;
+  text: string;
+  link: string;
+  accent: string;
+}

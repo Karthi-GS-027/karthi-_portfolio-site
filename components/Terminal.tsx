@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import type { PortfolioData, OutputLine, PersonalData, ContactInfo } from '../types';
+import type { PortfolioData, OutputLine, PersonalData, ContactInfo, Customization } from '../types';
 
 interface TerminalProps {
   data: PortfolioData;
   setData: React.Dispatch<React.SetStateAction<PortfolioData>>;
+  colors: Customization;
+  onCustomize: (target: keyof Customization, color: string) => void;
 }
 
-const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
+const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize }) => {
   const [history, setHistory] = useState<OutputLine[]>([]);
   const [input, setInput] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalEndRef = useRef<HTMLDivElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null); // For file uploads
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const userName = data.personal.Name.split(' ')[0];
 
   const scrollToBottom = () => {
@@ -41,7 +43,6 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
     } else if (file) {
       setHistory(prev => [...prev, { type: 'output', content: 'Error: Please select a valid image file.' }]);
     }
-    // Reset file input value to allow re-uploading the same file
     if (event.target) {
       event.target.value = '';
     }
@@ -86,6 +87,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
             <li><span className="text-white w-28 inline-block">ls</span>- List files.</li>
             <li><span className="text-white w-28 inline-block">cat</span>- View file contents.</li>
             <li><span className="text-white w-28 inline-block">neofetch</span>- System info.</li>
+            <li><span className="text-white w-28 inline-block">customize</span>- Change UI colors.</li>
             <li><span className="text-white w-28 inline-block">exit</span>- Close terminal.</li>
           </ul>
         );
@@ -118,7 +120,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
             {Object.entries(data.socials).map(([k, v]) => (
               <p key={k}>
                 <span className="text-white w-20 inline-block">{k}:</span> 
-                <a href={v} target="_blank" rel="noopener noreferrer" className="text-green-300 underline hover:text-white">{v}</a>
+                <a href={v} target="_blank" rel="noopener noreferrer" className="underline hover:text-white" style={{color: colors.link}}>{v}</a>
               </p>
             ))}
           </div>
@@ -152,7 +154,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
             {Object.entries(data.skills_list).map(([category, skills]) => (
               <div key={category} className="mb-1">
                 <p className="text-white">{category}:</p>
-                <p className="pl-4 text-green-300"> * {skills.join(', ')}</p>
+                <p className="pl-4" style={{ color: colors.link }}> * {skills.join(', ')}</p>
               </div>
             ))}
           </div>
@@ -161,7 +163,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
       
       case 'download':
         const link = document.createElement('a');
-        link.href = 'data:application/pdf;base64,'; // Placeholder
+        link.href = 'data:application/pdf;base64,';
         link.download = 'Karthi-Resume.pdf';
         document.body.appendChild(link);
         link.click();
@@ -238,8 +240,27 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
           output = `Error: Field '${field}' not found. Available fields: name, title, nationality, dob, gender, status, mobile, email, location.`;
         }
         break;
+      
+      case 'customize':
+        const [target, color] = args;
+        const validTargets = ['outline', 'text', 'link', 'accent'];
+        if (!target || !color) {
+          output = (
+            <div>
+              <p>Usage: customize &lt;target&gt; &lt;color&gt;</p>
+              <p>Example: customize outline hotpink</p>
+              <p>Available targets: {validTargets.join(', ')}</p>
+              <p>Color can be a name (e.g., red), hex (e.g., #FF0000), or rgb.</p>
+            </div>
+          );
+        } else if (validTargets.includes(target.toLowerCase())) {
+          onCustomize(target.toLowerCase() as keyof Customization, color);
+          output = `Success: '${target}' color set to '${color}'.`;
+        } else {
+          output = `Error: Invalid target '${target}'. Available targets: ${validTargets.join(', ')}.`;
+        }
+        break;
 
-      // New commands
       case 'ipconfig':
         output = (
           <div>
@@ -328,7 +349,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
     
     newHistory.push({ type: 'output', content: output });
     setHistory(prev => [...prev, ...newHistory]);
-  }, [data, setData, userName]);
+  }, [data, setData, userName, onCustomize, colors.link]);
 
   useEffect(() => {
     processCommand('whoami');
@@ -352,9 +373,16 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
 
   return (
     <div 
-      className="w-full bg-black/80 border-2 border-green-400/50 rounded-lg p-4 text-sm flex flex-col h-[30rem]"
+      className="w-full bg-black/80 rounded-lg p-4 text-sm flex flex-col h-[30rem]"
+      style={{ borderColor: colors.outline, borderStyle: 'solid', borderWidth: 2 }}
       onClick={handleTerminalClick}
     >
+      <style>{`
+        .custom-placeholder::placeholder {
+          color: ${colors.text};
+          opacity: 0.6;
+        }
+      `}</style>
       <input
         type="file"
         ref={fileInputRef}
@@ -364,7 +392,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
       />
       <div className="flex-grow overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
         {history.map((line, index) => (
-          <div key={index} className={line.type === 'input' ? 'text-green-400' : 'text-green-400 mb-2'}>
+          <div key={index} className={line.type === 'input' ? '' : 'mb-2'}>
             {typeof line.content === 'string' ? (
               <span dangerouslySetInnerHTML={{ __html: line.content }} />
             ) : (
@@ -375,14 +403,15 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
         <div ref={terminalEndRef} />
       </div>
       <div className="flex items-center mt-2 flex-shrink-0">
-        <span className="text-green-400 mr-2">{`${userName}>`}</span>
+        <span className="mr-2">{`${userName}>`}</span>
         <input
           ref={inputRef}
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="bg-transparent border-none text-green-400 w-full focus:outline-none placeholder:text-green-400/60"
+          className="bg-transparent border-none w-full focus:outline-none custom-placeholder"
+          style={{ color: colors.text }}
           autoFocus
           spellCheck="false"
           autoComplete="off"

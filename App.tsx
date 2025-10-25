@@ -3,7 +3,7 @@ import IDCard from './components/IDCard';
 import Terminal from './components/Terminal';
 import Modal from './components/Modal';
 import InterviewForm from './components/InterviewForm';
-import type { PortfolioData } from './types';
+import type { PortfolioData, Customization } from './types';
 
 const initialPortfolioData: PortfolioData = {
   personal: {
@@ -49,6 +49,16 @@ const initialPortfolioData: PortfolioData = {
 const App: React.FC = () => {
   const [portfolioData, setPortfolioData] = useState<PortfolioData>(initialPortfolioData);
   const [modalState, setModalState] = useState<'closed' | 'form' | 'success'>('closed');
+  const [customColors, setCustomColors] = useState<Customization>({
+    outline: '#4ade80', // green-400
+    text: '#4ade80',    // green-400
+    link: '#6ee7b7',    // green-300
+    accent: '#22c55e',  // green-500
+  });
+
+  const handleCustomize = (target: keyof Customization, color: string) => {
+    setCustomColors(prev => ({ ...prev, [target]: color }));
+  };
 
   const handleFormSubmit = () => {
     setModalState('success');
@@ -69,23 +79,29 @@ const App: React.FC = () => {
 
   return (
     <>
-      <main className="bg-black text-green-400 h-screen font-mono flex flex-col md:flex-row md:items-center overflow-hidden">
+      <main 
+        className="bg-black h-screen font-mono flex flex-col md:flex-row md:items-center overflow-hidden"
+        style={{ color: customColors.text }}
+      >
         <div className="w-full md:w-2/5 flex items-center justify-center p-4 md:p-8">
-          <IDCard data={portfolioData} onInviteClick={() => setModalState('form')} />
+          <IDCard data={portfolioData} onInviteClick={() => setModalState('form')} colors={customColors} />
         </div>
-        <div className="hidden md:block w-px bg-green-400/50"></div>
+        <div 
+            className="hidden md:block w-px"
+            style={{ backgroundColor: customColors.outline, opacity: 0.5 }}
+        ></div>
         <div className="w-full md:w-3/5 p-4 md:p-8 flex items-center justify-center">
-          <Terminal data={portfolioData} setData={setPortfolioData} />
+          <Terminal data={portfolioData} setData={setPortfolioData} colors={customColors} onCustomize={handleCustomize} />
         </div>
       </main>
       {modalState !== 'closed' && (
-        <Modal onClose={closeModal}>
-          {modalState === 'form' && <InterviewForm onSubmit={handleFormSubmit} />}
+        <Modal onClose={closeModal} colors={customColors}>
+          {modalState === 'form' && <InterviewForm onSubmit={handleFormSubmit} colors={customColors} />}
           {modalState === 'success' && (
             <div className="text-center p-8">
               <h2 className="text-2xl font-bold text-white mb-4">Success!</h2>
-              <p className="text-green-300">Invitation Sent Successfully!</p>
-              <p className="text-xs text-green-500 mt-4 animate-pulse">This window will close automatically.</p>
+              <p style={{ color: customColors.link }}>Invitation Sent Successfully!</p>
+              <p className="text-xs mt-4 animate-pulse" style={{ color: customColors.accent }}>This window will close automatically.</p>
             </div>
           )}
         </Modal>
