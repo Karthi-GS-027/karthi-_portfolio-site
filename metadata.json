@@ -1,0 +1,5 @@
+{
+  "name": "CMD Portfolio Generator",
+  "description": "A single-page, fully interactive developer portfolio featuring a 3D rotating ID card and a functional CMD terminal, built with React and Tailwind CSS.",
+  "requestFramePermissions": []
+}
