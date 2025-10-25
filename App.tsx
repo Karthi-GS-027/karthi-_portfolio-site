@@ -19,6 +19,10 @@ const initialPortfolioData: PortfolioData = {
     'Email': 'gkarthi.ui@gmail.com',
     'Location': 'Mayiladuthurai, Tamil Nadu, India'
   },
+  socials: {
+    'LinkedIn': 'https://www.linkedin.com/in/your-profile',
+    'GitHub': 'https://github.com/Karthi-GS-027'
+  },
   experience_log: [
     'System Administrator, GS-sysnet, Bangalore, Karnataka (May 2024 - Present)',
     '- Provided IT support for 1000+ users, resolving hardware, software, and network issues with a 95% first-call resolution rate.',

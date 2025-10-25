@@ -50,10 +50,11 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
   const processCommand = useCallback((commandStr: string) => {
     const newHistory: OutputLine[] = [{ type: 'input', content: `${userName}> ${commandStr}` }];
     const commandParts = commandStr.trim().split(/\s+/);
-    const command = commandParts[0];
+    const command = commandParts[0].toLowerCase();
+    const args = commandParts.slice(1);
     let output: React.ReactNode = `Error: command not found: ${command}. Type 'help' for a list of commands.`;
 
-    switch (command.toLowerCase()) {
+    switch (command) {
       case 'whoami':
         output = (
           <div>
@@ -65,16 +66,26 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
       
       case 'help':
         output = (
-          <ul className="list-inside">
-            <li><span className="text-white w-28 inline-block">summary</span>- Display a brief summary.</li>
-            <li><span className="text-white w-28 inline-block">contact</span>- Show contact information.</li>
-            <li><span className="text-white w-28 inline-block">about</span>- Display personal details.</li>
-            <li><span className="text-white w-28 inline-block">experience / exp</span>- List professional experience.</li>
-            <li><span className="text-white w-28 inline-block">skills</span>- Show technical skills.</li>
-            <li><span className="text-white w-28 inline-block">download</span>- Download the resume PDF.</li>
-            <li><span className="text-white w-28 inline-block">upload picture</span>- Upload picture from your PC.</li>
-            <li><span className="text-white w-28 inline-block">clear</span>- Clear the terminal screen.</li>
-            <li><span className="text-white w-28 inline-block">whoami</span>- Display initial welcome message.</li>
+          <ul className="list-inside grid grid-cols-2 gap-x-4">
+            <li><span className="text-white w-28 inline-block">summary</span>- Brief summary.</li>
+            <li><span className="text-white w-28 inline-block">contact</span>- Contact info.</li>
+            <li><span className="text-white w-28 inline-block">socials</span>- Social media links.</li>
+            <li><span className="text-white w-28 inline-block">about</span>- Personal details.</li>
+            <li><span className="text-white w-28 inline-block">experience</span>- Work experience.</li>
+            <li><span className="text-white w-28 inline-block">skills</span>- Technical skills.</li>
+            <li><span className="text-white w-28 inline-block">download</span>- Download resume.</li>
+            <li><span className="text-white w-28 inline-block">upload</span>- Upload a picture.</li>
+            <li><span className="text-white w-28 inline-block">clear</span>- Clear screen.</li>
+            <li><span className="text-white w-28 inline-block">whoami</span>- Welcome message.</li>
+            <li><span className="text-white w-28 inline-block">ipconfig</span>- Show network info.</li>
+            <li><span className="text-white w-28 inline-block">hostname</span>- Display hostname.</li>
+            <li><span className="text-white w-28 inline-block">date</span>- Show current date.</li>
+            <li><span className="text-white w-28 inline-block">echo</span>- Print arguments.</li>
+            <li><span className="text-white w-28 inline-block">ping</span>- Ping a host.</li>
+            <li><span className="text-white w-28 inline-block">ls</span>- List files.</li>
+            <li><span className="text-white w-28 inline-block">cat</span>- View file contents.</li>
+            <li><span className="text-white w-28 inline-block">neofetch</span>- System info.</li>
+            <li><span className="text-white w-28 inline-block">exit</span>- Close terminal.</li>
           </ul>
         );
         break;
@@ -95,6 +106,19 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
           <div>
             {Object.entries(data.contact_info).map(([k, v]) => (
               <p key={k}><span className="text-white w-20 inline-block">{k}:</span> {v}</p>
+            ))}
+          </div>
+        );
+        break;
+        
+      case 'socials':
+        output = (
+          <div>
+            {Object.entries(data.socials).map(([k, v]) => (
+              <p key={k}>
+                <span className="text-white w-20 inline-block">{k}:</span> 
+                <a href={v} target="_blank" rel="noopener noreferrer" className="text-green-300 underline hover:text-white">{v}</a>
+              </p>
             ))}
           </div>
         );
@@ -145,7 +169,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
         break;
 
       case 'upload':
-        if (commandParts[1]?.toLowerCase() === 'picture') {
+        if (args[0]?.toLowerCase() === 'picture') {
           output = (
             <button
               onClick={() => fileInputRef.current?.click()}
@@ -162,6 +186,92 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
       case 'clear':
         setHistory([]);
         return;
+        
+      // New commands
+      case 'ipconfig':
+        output = (
+          <div>
+            <p>Network Interface Card:</p>
+            <p className="pl-4">IPv4 Address: 192.168.1.101</p>
+            <p className="pl-4">Subnet Mask: 255.255.255.0</p>
+            <p className="pl-4">Default Gateway: 192.168.1.1</p>
+          </div>
+        );
+        break;
+
+      case 'hostname':
+        output = 'portfolio-server-01';
+        break;
+
+      case 'date':
+        output = new Date().toLocaleString();
+        break;
+
+      case 'echo':
+        output = args.join(' ');
+        break;
+
+      case 'ping':
+        const host = args[0] || 'localhost';
+        output = (
+          <div>
+            <p>Pinging {host} with 32 bytes of data:</p>
+            <p>Reply from {host}: bytes=32 time=1ms TTL=128</p>
+            <p>Reply from {host}: bytes=32 time=1ms TTL=128</p>
+            <p>Reply from {host}: bytes=32 time=1ms TTL=128</p>
+          </div>
+        );
+        break;
+        
+      case 'ls':
+        output = (
+          <div className="grid grid-cols-3 gap-x-4">
+            <span className="text-blue-400">projects/</span>
+            <span>about.txt</span>
+            <span>contact.txt</span>
+            <span>resume.pdf</span>
+            <span>skills.json</span>
+          </div>
+        );
+        break;
+        
+      case 'cat':
+        const fileName = args[0];
+        if (!fileName) {
+          output = 'Usage: cat [filename]. Try "cat about.txt"';
+        } else if (fileName === 'about.txt') {
+          processCommand('about');
+          return;
+        } else if (fileName === 'contact.txt') {
+          processCommand('contact');
+          return;
+        } else {
+          output = `cat: ${fileName}: No such file or directory`;
+        }
+        break;
+        
+      case 'neofetch':
+        output = (
+          <pre className="whitespace-pre-wrap">
+            {`
+   <span class="text-white">${userName}@portfolio</span>
+   -----------------
+   <span class="text-white">OS:</span> Web Browser
+   <span class="text-white">Host:</span> ${window.location.hostname}
+   <span class="text-white">Kernel:</span> ReactJS
+   <span class="text-white">Uptime:</span> Online
+   <span class="text-white">Shell:</span> /bin/portfolio-cmd
+   <span class="text-white">CPU:</span> Your Brain
+   <span class="text-white">GPU:</span> Your Eyes
+   <span class="text-white">Memory:</span> System RAM
+            `}
+          </pre>
+        );
+        break;
+        
+      case 'exit':
+        output = 'Thank you for visiting. Have a great day!';
+        break;
     }
     
     newHistory.push({ type: 'output', content: output });
@@ -200,10 +310,14 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
         accept="image/*"
         className="hidden"
       />
-      <div className="flex-grow overflow-y-auto">
+      <div className="flex-grow overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
         {history.map((line, index) => (
           <div key={index} className={line.type === 'input' ? 'text-green-400' : 'text-green-400 mb-2'}>
-            {line.content}
+            {typeof line.content === 'string' ? (
+              <span dangerouslySetInnerHTML={{ __html: line.content }} />
+            ) : (
+              line.content
+            )}
           </div>
         ))}
         <div ref={terminalEndRef} />

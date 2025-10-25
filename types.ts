@@ -1,4 +1,3 @@
-
 export interface PersonalData {
   'Name': string;
   'Nationality': string;
@@ -17,6 +16,7 @@ export interface ContactInfo {
 export interface PortfolioData {
   personal: PersonalData;
   contact_info: ContactInfo;
+  socials: Record<string, string>;
   experience_log: string[];
   skills_list: Record<string, string[]>;
 }
