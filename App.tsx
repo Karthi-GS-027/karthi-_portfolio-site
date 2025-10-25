@@ -8,6 +8,7 @@ import type { PortfolioData } from './types';
 const initialPortfolioData: PortfolioData = {
   personal: {
     'Name': 'Karthi G',
+    'title': 'System Administrator',
     'Nationality': 'Indian',
     'Date of Birth': '17/06/2000',
     'Gender': 'Male',

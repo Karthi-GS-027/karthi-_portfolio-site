@@ -40,7 +40,7 @@ const IDCard: React.FC<IDCardProps> = ({ data, onInviteClick }) => {
             className="w-32 h-32 rounded-full border-4 border-green-400 mb-4 object-cover"
           />
           <h1 className="text-3xl font-bold text-white">{data.personal.Name}</h1>
-          <p className="text-green-300 mt-2">System Administrator</p>
+          <p className="text-green-300 mt-2">{data.personal.title}</p>
           <div className="mt-4 border-t-2 border-green-400/50 w-2/3"></div>
            <p className="text-sm text-green-500 mt-4 animate-pulse">-- Click or wait to flip --</p>
         </div>

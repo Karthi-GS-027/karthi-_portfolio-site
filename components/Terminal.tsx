@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import type { PortfolioData, OutputLine } from '../types';
+import type { PortfolioData, OutputLine, PersonalData, ContactInfo } from '../types';
 
 interface TerminalProps {
   data: PortfolioData;
@@ -58,7 +58,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
       case 'whoami':
         output = (
           <div>
-            <p>Welcome! This is the interactive portfolio of Karthi G.</p>
+            <p>Welcome! This is the interactive portfolio of {data.personal.Name}.</p>
             <p>To start, try <span className="text-white">'summary'</span>. For all options, type <span className="text-white">'help'</span>.</p>
           </div>
         );
@@ -73,8 +73,9 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
             <li><span className="text-white w-28 inline-block">about</span>- Personal details.</li>
             <li><span className="text-white w-28 inline-block">experience</span>- Work experience.</li>
             <li><span className="text-white w-28 inline-block">skills</span>- Technical skills.</li>
-            <li><span className="text-white w-28 inline-block">download</span>- Download resume.</li>
+            <li><span className="text-white w-28 inline-block">set</span>- Edit ID card data.</li>
             <li><span className="text-white w-28 inline-block">upload</span>- Upload a picture.</li>
+            <li><span className="text-white w-28 inline-block">download</span>- Download resume.</li>
             <li><span className="text-white w-28 inline-block">clear</span>- Clear screen.</li>
             <li><span className="text-white w-28 inline-block">whoami</span>- Welcome message.</li>
             <li><span className="text-white w-28 inline-block">ipconfig</span>- Show network info.</li>
@@ -95,7 +96,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
           <ul className="list-inside list-disc">
             <li>Email: {data.contact_info.Email}</li>
             <li>Location: {data.contact_info.Location}</li>
-            <li>Role: System Administrator</li>
+            <li>Role: {data.personal.title}</li>
             <li>Type <span className="text-white">'download'</span> to get my full resume.</li>
           </ul>
         );
@@ -130,7 +131,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
             {Object.entries(data.personal)
               .filter(([key]) => key !== 'profile_picture_url')
               .map(([k, v]) => (
-              <p key={k}><span className="text-white w-32 inline-block">{k}:</span> {v}</p>
+              <p key={k}><span className="text-white w-32 inline-block">{k === 'title' ? 'Title' : k}:</span> {v}</p>
             ))}
           </div>
         );
@@ -187,6 +188,57 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData }) => {
         setHistory([]);
         return;
         
+      case 'set':
+        const [field, ...valueParts] = args;
+        const value = valueParts.join(' ');
+      
+        if (!field || !value) {
+          output = 'Usage: set <field> <value>. Example: set title Senior Developer';
+          break;
+        }
+      
+        const fieldLower = field.toLowerCase();
+        let updated = false;
+      
+        const personalFieldMap: { [key: string]: keyof PersonalData } = {
+          'name': 'Name',
+          'title': 'title',
+          'nationality': 'Nationality',
+          'dob': 'Date of Birth',
+          'gender': 'Gender',
+          'status': 'Marital Status'
+        };
+      
+        const contactFieldMap: { [key: string]: keyof ContactInfo } = {
+          'mobile': 'Mobile',
+          'phone': 'Mobile',
+          'email': 'Email',
+          'location': 'Location'
+        };
+      
+        if (Object.keys(personalFieldMap).includes(fieldLower)) {
+          const keyToUpdate = personalFieldMap[fieldLower];
+          setData(prev => ({
+            ...prev,
+            personal: { ...prev.personal, [keyToUpdate]: value }
+          }));
+          updated = true;
+        } else if (Object.keys(contactFieldMap).includes(fieldLower)) {
+          const keyToUpdate = contactFieldMap[fieldLower];
+          setData(prev => ({
+            ...prev,
+            contact_info: { ...prev.contact_info, [keyToUpdate]: value }
+          }));
+          updated = true;
+        }
+      
+        if (updated) {
+          output = `Success: '${field}' updated to '${value}'.`;
+        } else {
+          output = `Error: Field '${field}' not found. Available fields: name, title, nationality, dob, gender, status, mobile, email, location.`;
+        }
+        break;
+
       // New commands
       case 'ipconfig':
         output = (

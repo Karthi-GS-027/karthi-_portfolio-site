@@ -1,5 +1,6 @@
 export interface PersonalData {
   'Name': string;
+  'title': string;
   'Nationality': string;
   'Date of Birth': string;
   'Gender': 'Male' | 'Female' | 'Other';
