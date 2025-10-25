@@ -6,6 +6,19 @@ interface IDCardProps {
   onInviteClick: () => void;
 }
 
+const socialIcons: { [key: string]: React.ReactNode } = {
+  'LinkedIn': (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+      <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.62 1.62 0 0013 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"></path>
+    </svg>
+  ),
+  'Naukri': (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+      <path fillRule="evenodd" d="M7.5 5.25A2.25 2.25 0 019.75 3h4.5A2.25 2.25 0 0116.5 5.25V6h3A2.25 2.25 0 0121.75 8.25v8.5A2.25 2.25 0 0119.5 19H4.5A2.25 2.25 0 012.25 16.75v-8.5A2.25 2.25 0 014.5 6h3V5.25zm2.25-.75a.75.75 0 00-.75.75V6h6V5.25a.75.75 0 00-.75-.75h-4.5z" clipRule="evenodd" />
+    </svg>
+  )
+};
+
 const IDCard: React.FC<IDCardProps> = ({ data, onInviteClick }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -41,6 +54,23 @@ const IDCard: React.FC<IDCardProps> = ({ data, onInviteClick }) => {
           />
           <h1 className="text-3xl font-bold text-white">{data.personal.Name}</h1>
           <p className="text-green-300 mt-2">{data.personal.title}</p>
+          
+          <div className="flex items-center justify-center space-x-4 mt-4">
+            {Object.entries(data.socials).map(([name, url]) => (
+              <a
+                key={name}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="text-green-300 hover:text-white transition-colors"
+                aria-label={`Visit my ${name} profile`}
+              >
+                {socialIcons[name] || null}
+              </a>
+            ))}
+          </div>
+
           <div className="mt-4 border-t-2 border-green-400/50 w-2/3"></div>
            <p className="text-sm text-green-500 mt-4 animate-pulse">-- Click or wait to flip --</p>
         </div>

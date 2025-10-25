@@ -21,8 +21,8 @@ const initialPortfolioData: PortfolioData = {
     'Location': 'Mayiladuthurai, Tamil Nadu, India'
   },
   socials: {
-    'LinkedIn': 'https://www.linkedin.com/in/your-profile',
-    'GitHub': 'https://github.com/Karthi-GS-027'
+    'LinkedIn': 'https://www.linkedin.com/in/karthi-g17/',
+    'Naukri': 'https://www.naukri.com/mnjuser/profile?id=&altresid'
   },
   experience_log: [
     'System Administrator, GS-sysnet, Bangalore, Karnataka (May 2024 - Present)',
