@@ -29,7 +29,6 @@ const hexToRgba = (hex: string, alpha: number): string => {
 
 const IDCard: React.FC<IDCardProps> = ({ data, onInviteClick, colors }) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isButtonHovered, setIsButtonHovered] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -93,17 +92,11 @@ const IDCard: React.FC<IDCardProps> = ({ data, onInviteClick, colors }) => {
 
         {/* Back Face */}
         <div 
-          className="absolute w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gray-900/50 rounded-lg p-6 flex flex-col justify-between relative overflow-hidden"
-          style={{ ...cardShadow, borderColor: colors.outline, borderWidth: 2 }}
+          className="absolute w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gray-100 rounded-lg p-6 flex flex-col justify-between relative overflow-hidden text-gray-700 border-2 border-yellow-400"
+          style={{ boxShadow: `0 0 15px rgba(250, 204, 21, 0.4)` }}
         >
-          
-          <div
-            className="absolute inset-0 bg-cover bg-center animate-pulse-bg z-0"
-            style={{ backgroundImage: "url('https://i.imgur.com/5i514f5.jpeg')" }}
-          ></div>
-
           <div className="absolute inset-0 flex items-center justify-center z-0">
-             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.5" stroke="currentColor" className="w-48 h-48" style={{ color: colors.outline, opacity: 0.1 }}>
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.5" stroke="currentColor" className="w-48 h-48 text-yellow-400/20">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.438.995s.145.755.438.995l1.003.827c.48.398.668 1.03.26 1.431l-1.296 2.247a1.125 1.125 0 0 1-1.37.49l-1.217-.456c-.355-.133-.75-.072-1.075.124a6.337 6.337 0 0 1-.22.127c-.332.183-.582.495-.645.87l-.213 1.281c-.09.543-.56.94-1.11.94h-2.593c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.063-.374-.313-.686-.645-.87a6.337 6.337 0 0 1-.22-.127c-.324-.196-.72-.257-1.075.124l-1.217.456a1.125 1.125 0 0 1-1.37-.49l-1.296-2.247a1.125 1.125 0 0 1 .26-1.431l1.003-.827c.293-.24.438.613.438.995s-.145-.755-.438-.995l-1.003-.827a1.125 1.125 0 0 1-.26-1.431l1.296-2.247a1.125 1.125 0 0 1 1.37-.49l1.217.456c.355.133.75.072 1.075-.124.073-.044.146-.087.22-.127.332-.183.582-.495.645-.87l.213-1.281z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
             </svg>
@@ -111,11 +104,11 @@ const IDCard: React.FC<IDCardProps> = ({ data, onInviteClick, colors }) => {
 
           <div className="relative z-10 flex flex-col justify-between h-full">
             <div>
-              <h2 className="text-xl font-bold text-white border-b-2 pb-2" style={{ borderColor: colors.outline, opacity: 0.5 }}>CONTACT</h2>
+              <h2 className="text-xl font-bold text-gray-800 border-b-2 border-yellow-400/50 pb-2">CONTACT</h2>
               <div className="mt-4 text-sm space-y-2">
-                <p><span className="font-bold text-white">Email:</span> {data.contact_info.Email}</p>
-                <p><span className="font-bold text-white">Mobile:</span> {data.contact_info.Mobile}</p>
-                <p><span className="font-bold text-white">Status:</span> {data.personal['Marital Status']}</p>
+                <p><span className="font-semibold text-gray-900">Email:</span> {data.contact_info.Email}</p>
+                <p><span className="font-semibold text-gray-900">Mobile:</span> {data.contact_info.Mobile}</p>
+                <p><span className="font-semibold text-gray-900">Status:</span> {data.personal['Marital Status']}</p>
               </div>
             </div>
 
@@ -125,17 +118,11 @@ const IDCard: React.FC<IDCardProps> = ({ data, onInviteClick, colors }) => {
                   e.stopPropagation();
                   onInviteClick();
                 }}
-                onMouseEnter={() => setIsButtonHovered(true)}
-                onMouseLeave={() => setIsButtonHovered(false)}
-                className="w-full text-white font-bold py-2 px-4 rounded transition-colors duration-300"
-                style={{
-                    border: `1px solid ${colors.accent}`,
-                    backgroundColor: hexToRgba(colors.accent, isButtonHovered ? 0.4 : 0.2),
-                }}
+                className="w-full text-black bg-yellow-400 hover:bg-yellow-500 font-bold py-2 px-4 rounded transition-colors duration-300"
               >
                 Send Interview Invitation
               </button>
-              <div className="text-center text-xs" style={{ color: colors.text, opacity: 0.8 }}>
+              <div className="text-center text-xs text-gray-500">
                 [ ID Card v1.0 | Property of {data.personal.Name} ]
               </div>
             </div>
