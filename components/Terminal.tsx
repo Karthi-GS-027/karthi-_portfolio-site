@@ -84,9 +84,12 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
     const args = commandParts.slice(1);
     let output: React.ReactNode = null;
 
-    const fullCommand = commandStr.trim().toLowerCase();
+    let effectiveCommand = command;
+    if (command === 'help' && args[0]?.toLowerCase() === 'me') {
+      effectiveCommand = 'help me';
+    }
 
-    switch (command) {
+    switch (effectiveCommand) {
       case 'karthi':
         output = "That's my name! To see what you can do, type 'help'.";
         break;
@@ -111,6 +114,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
               <li><span className="text-white w-28 inline-block">download</span>- Download resume.</li>
               <li><span className="text-white w-28 inline-block">socials</span>- Social media links.</li>
               <li><span className="text-white w-28 inline-block">experience</span>- Work experience.</li>
+              <li><span className="text-white w-28 inline-block">education</span>- Education history.</li>
               <li><span className="text-white w-28 inline-block">contact</span>- Contact info.</li>
             </ul>
             <p className="mt-2">For a full list of all commands, type '<span className="text-white">help me</span>'.</p>
@@ -121,30 +125,43 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
 
       case 'help me':
          output = (
-          <ul className="list-inside grid grid-cols-2 gap-x-4">
-            <li><span className="text-white w-28 inline-block">summary</span>- Brief summary.</li>
-            <li><span className="text-white w-28 inline-block">contact</span>- Contact info.</li>
-            <li><span className="text-white w-28 inline-block">socials</span>- Social media links.</li>
-            <li><span className="text-white w-28 inline-block">about</span>- Personal details.</li>
-            <li><span className="text-white w-28 inline-block">experience</span>- Work experience.</li>
-            <li><span className="text-white w-28 inline-block">skills</span>- Technical skills.</li>
-            <li><span className="text-white w-28 inline-block">set</span>- Edit ID card data.</li>
-            <li><span className="text-white w-28 inline-block">guide</span>- Get help on commands.</li>
-            <li><span className="text-white w-28 inline-block">upload</span>- Upload a picture.</li>
-            <li><span className="text-white w-28 inline-block">download</span>- Download resume.</li>
-            <li><span className="text-white w-28 inline-block">clear</span>- Clear screen.</li>
-            <li><span className="text-white w-28 inline-block">whoami</span>- Welcome message.</li>
-            <li><span className="text-white w-28 inline-block">ipconfig</span>- Show network info.</li>
-            <li><span className="text-white w-28 inline-block">hostname</span>- Display hostname.</li>
-            <li><span className="text-white w-28 inline-block">date</span>- Show current date.</li>
-            <li><span className="text-white w-28 inline-block">echo</span>- Print arguments.</li>
-            <li><span className="text-white w-28 inline-block">ping</span>- Ping a host.</li>
-            <li><span className="text-white w-28 inline-block">ls</span>- List files.</li>
-            <li><span className="text-white w-28 inline-block">cat</span>- View file contents.</li>
-            <li><span className="text-white w-28 inline-block">neofetch</span>- System info.</li>
-            <li><span className="text-white w-28 inline-block">customize</span>- Change UI colors.</li>
-            <li><span className="text-white w-28 inline-block">exit</span>- Close terminal.</li>
-          </ul>
+          <div>
+            <p className="text-white font-bold">-- Portfolio Commands --</p>
+            <ul className="list-inside grid grid-cols-2 gap-x-4 mb-2">
+              <li><span className="text-white w-24 inline-block">summary</span>- Brief summary.</li>
+              <li><span className="text-white w-24 inline-block">about</span>- Personal details.</li>
+              <li><span className="text-white w-24 inline-block">contact</span>- Contact info.</li>
+              <li><span className="text-white w-24 inline-block">socials</span>- Social media links.</li>
+              <li><span className="text-white w-24 inline-block">experience</span>- Work experience.</li>
+              <li><span className="text-white w-24 inline-block">skills</span>- Technical skills.</li>
+              <li><span className="text-white w-24 inline-block">education</span>- Education history.</li>
+              <li><span className="text-white w-24 inline-block">languages</span>- Known languages.</li>
+              <li><span className="text-white w-24 inline-block">download</span>- Download my resume.</li>
+            </ul>
+
+            <p className="text-white font-bold">-- Interaction Commands --</p>
+            <ul className="list-inside grid grid-cols-2 gap-x-4 mb-2">
+               <li><span className="text-white w-24 inline-block">set</span>- Edit ID card data.</li>
+               <li><span className="text-white w-24 inline-block">customize</span>- Change UI colors.</li>
+               <li><span className="text-white w-24 inline-block">upload</span>- Upload new picture.</li>
+               <li><span className="text-white w-24 inline-block">guide</span>- Get command help.</li>
+            </ul>
+            
+            <p className="text-white font-bold">-- System & Utility Commands --</p>
+            <ul className="list-inside grid grid-cols-2 gap-x-4">
+              <li><span className="text-white w-24 inline-block">whoami</span>- Welcome message.</li>
+              <li><span className="text-white w-24 inline-block">ipconfig</span>- Network info.</li>
+              <li><span className="text-white w-24 inline-block">hostname</span>- System hostname.</li>
+              <li><span className="text-white w-24 inline-block">date</span>- Current date/time.</li>
+              <li><span className="text-white w-24 inline-block">echo</span>- Print arguments.</li>
+              <li><span className="text-white w-24 inline-block">ping</span>- Ping a host.</li>
+              <li><span className="text-white w-24 inline-block">ls</span>- List "files".</li>
+              <li><span className="text-white w-24 inline-block">cat</span>- View "file" contents.</li>
+              <li><span className="text-white w-24 inline-block">neofetch</span>- System info.</li>
+              <li><span className="text-white w-24 inline-block">clear</span>- Clear the screen.</li>
+              <li><span className="text-white w-24 inline-block">exit</span>- Sign off.</li>
+            </ul>
+          </div>
         );
         break;
 
@@ -199,6 +216,22 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
         output = (
           <ul className="list-inside list-disc">
             {data.experience_log.map((item, i) => <li key={i}>{item}</li>)}
+          </ul>
+        );
+        break;
+
+      case 'education':
+        output = (
+          <ul className="list-inside list-disc">
+            {data.education.map((item, i) => <li key={i}>{item}</li>)}
+          </ul>
+        );
+        break;
+
+      case 'languages':
+        output = (
+          <ul className="list-inside list-disc">
+            {data.languages.map((item, i) => <li key={i}>{item}</li>)}
           </ul>
         );
         break;
@@ -466,6 +499,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
     if (output === null) {
         const ALL_COMMANDS = [
             'help', 'help me', 'summary', 'contact', 'socials', 'about', 'experience', 'exp', 'skills',
+            'education', 'languages',
             'set', 'upload', 'download', 'clear', 'whoami', 'ipconfig', 'hostname', 'date',
             'echo', 'ping', 'ls', 'cat', 'neofetch', 'customize', 'exit', 'karthi', 'guide'
         ];

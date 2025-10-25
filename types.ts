@@ -19,6 +19,8 @@ export interface PortfolioData {
   contact_info: ContactInfo;
   socials: Record<string, string>;
   experience_log: string[];
+  education: string[];
+  languages: string[];
   skills_list: Record<string, string[]>;
 }
 

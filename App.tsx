@@ -34,6 +34,15 @@ const initialPortfolioData: PortfolioData = {
     '- Assisted in the setup and configuration of new hardware and software.',
     '- Provided technical support and training to staff, enhancing their IT proficiency.'
   ],
+  education: [
+    'Bachelor of Computer Applications (BCA) - Annamalai University (2017-2020)',
+    'HSC - Government Higher Secondary School, Manalmedu (2015-2017)',
+    'SSLC - Government Higher Secondary School, Manalmedu (2014-2015)'
+  ],
+  languages: [
+    'Tamil (Native)',
+    'English (Professional Working Proficiency)'
+  ],
   skills_list: {
     'Networking & Protocols': ['TCP/IP', 'DNS', 'DHCP', 'VPN', 'LAN/WAN', 'OSI Model'],
     'System Administration': ['OS Installation (Windows/Linux, including server OS)', 'Hardware/Software Installation & Troubleshooting'],
