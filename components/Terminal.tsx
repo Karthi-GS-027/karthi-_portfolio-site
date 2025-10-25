@@ -66,7 +66,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
             'profile_picture_url': base64String,
           },
         }));
-        setHistory(prev => [...prev, { type: 'output', content: 'Success: Profile picture updated.' }]);
+        setHistory(prev => [...prev, { type: 'output', content: <div><span style={{ color: colors.text }}>Success:</span> Profile picture updated.</div> }]);
       };
       reader.readAsDataURL(file);
     } else if (file) {
@@ -98,7 +98,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
         output = (
           <div>
             <p>Welcome! This is the interactive portfolio of {data.personal.Name}.</p>
-            <p>To start, try <span className="text-white">'summary'</span>. For all options, type <span className="text-white">'help'</span>.</p>
+            <p>To start, try '<span style={{ color: colors.text }}>summary</span>'. For all options, type '<span style={{ color: colors.text }}>help</span>'.</p>
           </div>
         );
         break;
@@ -106,19 +106,19 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
       case 'help':
         output = (
           <div>
-            <p className="mb-2">Here are the essential commands to get started:</p>
+            <p className="mb-2" style={{ color: colors.text }}>Here are the essential commands to get started:</p>
             <ul className="list-inside grid grid-cols-2 gap-x-4">
-              <li><span className="text-white w-28 inline-block">summary</span>- Brief summary.</li>
-              <li><span className="text-white w-28 inline-block">about</span>- Personal details.</li>
-              <li><span className="text-white w-28 inline-block">skills</span>- Technical skills.</li>
-              <li><span className="text-white w-28 inline-block">download</span>- Download resume.</li>
-              <li><span className="text-white w-28 inline-block">socials</span>- Social media links.</li>
-              <li><span className="text-white w-28 inline-block">experience</span>- Work experience.</li>
-              <li><span className="text-white w-28 inline-block">education</span>- Education history.</li>
-              <li><span className="text-white w-28 inline-block">contact</span>- Contact info.</li>
+              <li><span className="font-semibold w-28 inline-block" style={{ color: colors.text }}>summary</span>- Brief summary.</li>
+              <li><span className="font-semibold w-28 inline-block" style={{ color: colors.text }}>about</span>- Personal details.</li>
+              <li><span className="font-semibold w-28 inline-block" style={{ color: colors.text }}>skills</span>- Technical skills.</li>
+              <li><span className="font-semibold w-28 inline-block" style={{ color: colors.text }}>download</span>- Download resume.</li>
+              <li><span className="font-semibold w-28 inline-block" style={{ color: colors.text }}>socials</span>- Social media links.</li>
+              <li><span className="font-semibold w-28 inline-block" style={{ color: colors.text }}>experience</span>- Work experience.</li>
+              <li><span className="font-semibold w-28 inline-block" style={{ color: colors.text }}>education</span>- Education history.</li>
+              <li><span className="font-semibold w-28 inline-block" style={{ color: colors.text }}>contact</span>- Contact info.</li>
             </ul>
-            <p className="mt-2">For a full list of all commands, type '<span className="text-white">help me</span>'.</p>
-            <p className="mt-1">For detailed instructions, type '<span className="text-white">guide customize</span>'.</p>
+            <p className="mt-2">For a full list of all commands, type '<span style={{ color: colors.text }}>help me</span>'.</p>
+            <p className="mt-1">For detailed instructions, type '<span style={{ color: colors.text }}>guide customize</span>'.</p>
           </div>
         );
         break;
@@ -126,40 +126,40 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
       case 'help me':
          output = (
           <div>
-            <p className="text-white font-bold">-- Portfolio Commands --</p>
+            <p className="font-bold" style={{ color: colors.text }}>-- Portfolio Commands --</p>
             <ul className="list-inside grid grid-cols-2 gap-x-4 mb-2">
-              <li><span className="text-white w-24 inline-block">summary</span>- Brief summary.</li>
-              <li><span className="text-white w-24 inline-block">about</span>- Personal details.</li>
-              <li><span className="text-white w-24 inline-block">contact</span>- Contact info.</li>
-              <li><span className="text-white w-24 inline-block">socials</span>- Social media links.</li>
-              <li><span className="text-white w-24 inline-block">experience</span>- Work experience.</li>
-              <li><span className="text-white w-24 inline-block">skills</span>- Technical skills.</li>
-              <li><span className="text-white w-24 inline-block">education</span>- Education history.</li>
-              <li><span className="text-white w-24 inline-block">languages</span>- Known languages.</li>
-              <li><span className="text-white w-24 inline-block">download</span>- Download my resume.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>summary</span>- Brief summary.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>about</span>- Personal details.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>contact</span>- Contact info.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>socials</span>- Social media links.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>experience</span>- Work experience.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>skills</span>- Technical skills.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>education</span>- Education history.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>languages</span>- Known languages.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>download</span>- Download my resume.</li>
             </ul>
 
-            <p className="text-white font-bold">-- Interaction Commands --</p>
+            <p className="font-bold" style={{ color: colors.text }}>-- Interaction Commands --</p>
             <ul className="list-inside grid grid-cols-2 gap-x-4 mb-2">
-               <li><span className="text-white w-24 inline-block">set</span>- Edit ID card data.</li>
-               <li><span className="text-white w-24 inline-block">customize</span>- Change UI colors.</li>
-               <li><span className="text-white w-24 inline-block">upload</span>- Upload new picture.</li>
-               <li><span className="text-white w-24 inline-block">guide</span>- Get command help.</li>
+               <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>set</span>- Edit ID card data.</li>
+               <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>customize</span>- Change UI colors.</li>
+               <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>upload</span>- Upload new picture.</li>
+               <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>guide</span>- Get command help.</li>
             </ul>
             
-            <p className="text-white font-bold">-- System & Utility Commands --</p>
+            <p className="font-bold" style={{ color: colors.text }}>-- System & Utility Commands --</p>
             <ul className="list-inside grid grid-cols-2 gap-x-4">
-              <li><span className="text-white w-24 inline-block">whoami</span>- Welcome message.</li>
-              <li><span className="text-white w-24 inline-block">ipconfig</span>- Network info.</li>
-              <li><span className="text-white w-24 inline-block">hostname</span>- System hostname.</li>
-              <li><span className="text-white w-24 inline-block">date</span>- Current date/time.</li>
-              <li><span className="text-white w-24 inline-block">echo</span>- Print arguments.</li>
-              <li><span className="text-white w-24 inline-block">ping</span>- Ping a host.</li>
-              <li><span className="text-white w-24 inline-block">ls</span>- List "files".</li>
-              <li><span className="text-white w-24 inline-block">cat</span>- View "file" contents.</li>
-              <li><span className="text-white w-24 inline-block">neofetch</span>- System info.</li>
-              <li><span className="text-white w-24 inline-block">clear</span>- Clear the screen.</li>
-              <li><span className="text-white w-24 inline-block">exit</span>- Sign off.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>whoami</span>- Welcome message.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>ipconfig</span>- Network info.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>hostname</span>- System hostname.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>date</span>- Current date/time.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>echo</span>- Print arguments.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>ping</span>- Ping a host.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>ls</span>- List "files".</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>cat</span>- View "file" contents.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>neofetch</span>- System info.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>clear</span>- Clear the screen.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>exit</span>- Sign off.</li>
             </ul>
           </div>
         );
@@ -167,12 +167,15 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
 
       case 'summary':
         output = (
-          <ul className="list-inside list-disc">
-            <li>Email: {data.contact_info.Email}</li>
-            <li>Location: {data.contact_info.Location}</li>
-            <li>Role: {data.personal.title}</li>
-            <li>Type <span className="text-white">'download'</span> to get my full resume.</li>
-          </ul>
+          <div>
+            <p className="font-bold mb-1" style={{ color: colors.text }}>-- Professional Summary --</p>
+            <ul className="list-inside list-disc">
+              <li><span className="font-semibold" style={{ color: colors.text }}>Email:</span> {data.contact_info.Email}</li>
+              <li><span className="font-semibold" style={{ color: colors.text }}>Location:</span> {data.contact_info.Location}</li>
+              <li><span className="font-semibold" style={{ color: colors.text }}>Role:</span> {data.personal.title}</li>
+              <li style={{ color: colors.text }}>Type 'download' to get my full resume.</li>
+            </ul>
+          </div>
         );
         break;
 
@@ -180,7 +183,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
         output = (
           <div>
             {Object.entries(data.contact_info).map(([k, v]) => (
-              <p key={k}><span className="text-white w-20 inline-block">{k}:</span> {v}</p>
+              <p key={k}><span className="font-semibold w-20 inline-block" style={{ color: colors.text }}>{k}:</span> {v}</p>
             ))}
           </div>
         );
@@ -191,8 +194,8 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
           <div>
             {Object.entries(data.socials).map(([k, v]) => (
               <p key={k}>
-                <span className="text-white w-20 inline-block">{k}:</span> 
-                <a href={v} target="_blank" rel="noopener noreferrer" className="underline hover:text-white" style={{color: colors.link}}>{v}</a>
+                <span className="font-semibold w-20 inline-block" style={{ color: colors.text }}>{k}:</span> 
+                <a href={v} target="_blank" rel="noopener noreferrer" className="underline hover:opacity-80" style={{ color: colors.link }}>{v}</a>
               </p>
             ))}
           </div>
@@ -205,7 +208,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
             {Object.entries(data.personal)
               .filter(([key]) => key !== 'profile_picture_url')
               .map(([k, v]) => (
-              <p key={k}><span className="text-white w-32 inline-block">{k === 'title' ? 'Title' : k}:</span> {v}</p>
+              <p key={k}><span className="font-semibold w-32 inline-block" style={{ color: colors.text }}>{k === 'title' ? 'Title' : k}:</span> {v}</p>
             ))}
           </div>
         );
@@ -215,7 +218,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
       case 'experience':
         output = (
           <ul className="list-inside list-disc">
-            {data.experience_log.map((item, i) => <li key={i}>{item}</li>)}
+            {data.experience_log.map((item, i) => <li key={i}>{item.startsWith('-') ? <span className="ml-4">{item}</span> : <span className="font-semibold" style={{ color: colors.text }}>{item}</span>}</li>)}
           </ul>
         );
         break;
@@ -241,8 +244,8 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
           <div>
             {Object.entries(data.skills_list).map(([category, skills]) => (
               <div key={category} className="mb-1">
-                <p className="text-white">{category}:</p>
-                <p className="pl-4" style={{ color: colors.link }}> * {skills.join(', ')}</p>
+                <p className="font-semibold" style={{ color: colors.text }}>{category}:</p>
+                <p className="pl-4"> * {skills.join(', ')}</p>
               </div>
             ))}
           </div>
@@ -256,7 +259,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        output = "Success: Download initiated for Karthi-Resume.pdf...";
+        output = <div><span style={{ color: colors.text }}>Success:</span> Download initiated for Karthi-Resume.pdf...</div>;
         break;
       
       case 'clear':
@@ -274,7 +277,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
       case 'ls':
         output = (
           <div className="grid grid-cols-3 gap-x-4">
-            <span className="text-blue-400">projects/</span>
+            <span>projects/</span>
             <span>about.txt</span>
             <span>contact.txt</span>
             <span>resume.pdf</span>
@@ -284,21 +287,36 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
         break;
         
       case 'neofetch':
+        const neofetchLines = [
+            `${userName}@portfolio`,
+            '-----------------',
+            `OS: Web Browser`,
+            `Host: ${window.location.hostname}`,
+            `Kernel: ReactJS`,
+            `Uptime: Online`,
+            `Shell: /bin/portfolio-cmd`,
+            `CPU: Your Brain`,
+            `GPU: Your Eyes`,
+            `Memory: System RAM`
+        ];
         output = (
-          <pre className="whitespace-pre-wrap">
-            {`
-   <span class="text-white">${userName}@portfolio</span>
-   -----------------
-   <span class="text-white">OS:</span> Web Browser
-   <span class="text-white">Host:</span> ${window.location.hostname}
-   <span class="text-white">Kernel:</span> ReactJS
-   <span class="text-white">Uptime:</span> Online
-   <span class="text-white">Shell:</span> /bin/portfolio-cmd
-   <span class="text-white">CPU:</span> Your Brain
-   <span class="text-white">GPU:</span> Your Eyes
-   <span class="text-white">Memory:</span> System RAM
-            `}
-          </pre>
+            <pre className="whitespace-pre-wrap">
+                {neofetchLines.map((line, i) => {
+                    if (i === 0) {
+                        return <div key={i} style={{ color: colors.text }}>{line}</div>;
+                    }
+                    const parts = line.split(':');
+                    if (parts.length > 1) {
+                        return (
+                            <div key={i}>
+                                <span style={{ color: colors.text }}>{parts[0]}:</span>
+                                <span>{parts.slice(1).join(':')}</span>
+                            </div>
+                        );
+                    }
+                    return <div key={i}>{line}</div>;
+                })}
+            </pre>
         );
         break;
         
@@ -309,39 +327,37 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
       case 'guide':
         const topic = args[0];
         if (!topic) {
-            output = "This command provides detailed instructions for other features. Usage: guide <command>. Try 'guide customize' or 'guide set'.";
+            output = "This command provides detailed instructions. Usage: guide <command>. Try 'guide customize' or 'guide set'.";
         } else if (topic.toLowerCase() === 'customize') {
             output = (
                 <div>
-                    <p className="text-white font-bold">-- Customization Guide --</p>
-                    <p>You can change the color scheme of this portfolio using the 'customize' command.</p>
-                    <p className="mt-2">Usage: <span className="text-white">customize &lt;target&gt; &lt;color&gt;</span></p>
-                    <p className="mt-2">Targets available:</p>
+                    <p className="font-bold" style={{ color: colors.text }}>-- Customization Guide --</p>
+                    <p>Change the portfolio color scheme using the 'customize' command.</p>
+                    <p className="mt-2"><span style={{ color: colors.text }}>Usage:</span> <span className="font-semibold" style={{ color: colors.text }}>customize &lt;target&gt; &lt;color&gt;</span></p>
+                    <p className="mt-2"><span style={{ color: colors.text }}>Targets:</span></p>
                     <ul className="list-disc list-inside pl-4">
-                        <li><span className="text-white w-20 inline-block">outline:</span> The border color of all elements.</li>
-                        <li><span className="text-white w-20 inline-block">text:</span> The main text color.</li>
-                        <li><span className="text-white w-20 inline-block">link:</span> The color of links and secondary text.</li>
-                        <li><span className="text-white w-20 inline-block">accent:</span> The color for buttons and highlights.</li>
+                        <li><span className="font-semibold w-20 inline-block" style={{ color: colors.text }}>outline:</span> The border color.</li>
+                        <li><span className="font-semibold w-20 inline-block" style={{ color: colors.text }}>text:</span> The main text color.</li>
+                        <li><span className="font-semibold w-20 inline-block" style={{ color: colors.text }}>link:</span> The color of links.</li>
+                        <li><span className="font-semibold w-20 inline-block" style={{ color: colors.text }}>accent:</span> The color for highlights.</li>
                     </ul>
-                    <p className="mt-2">Example:</p>
-                    <p className="pl-4"><span className="text-white">customize outline #ff00ff</span> (changes borders to magenta)</p>
-                    <p className="pl-4"><span className="text-white">customize text white</span> (changes text to white)</p>
+                    <p className="mt-2"><span style={{ color: colors.text }}>Example:</span></p>
+                    <p className="pl-4"><span className="font-semibold" style={{ color: colors.text }}>customize outline #ff00ff</span></p>
                 </div>
             );
         } else if (topic.toLowerCase() === 'set') {
              output = (
                 <div>
-                    <p className="text-white font-bold">-- Set Data Guide --</p>
-                    <p>You can edit the information on the ID card in real-time using the 'set' command.</p>
-                    <p className="mt-2">Usage: <span className="text-white">set &lt;field&gt; &lt;new value&gt;</span></p>
-                    <p className="mt-2">Fields available:</p>
+                    <p className="font-bold" style={{ color: colors.text }}>-- Set Data Guide --</p>
+                    <p>Edit ID card information in real-time using the 'set' command.</p>
+                    <p className="mt-2"><span style={{ color: colors.text }}>Usage:</span> <span className="font-semibold" style={{ color: colors.text }}>set &lt;field&gt; &lt;new value&gt;</span></p>
+                    <p className="mt-2"><span style={{ color: colors.text }}>Fields:</span></p>
                     <ul className="list-disc list-inside pl-4">
                          <li>name, title, nationality, dob, gender, status</li>
                          <li>mobile, email, location</li>
                     </ul>
-                    <p className="mt-2">Example:</p>
-                    <p className="pl-4"><span className="text-white">set title Lead Developer</span></p>
-                    <p className="pl-4"><span className="text-white">set name John Doe</span></p>
+                    <p className="mt-2"><span style={{ color: colors.text }}>Example:</span></p>
+                    <p className="pl-4"><span className="font-semibold" style={{ color: colors.text }}>set title Lead Developer</span></p>
                 </div>
             );
         } else {
@@ -356,7 +372,8 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
               output = (
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="bg-green-500/20 hover:bg-green-500/40 border border-green-500 text-white font-bold py-1 px-3 rounded transition-colors duration-300"
+                  style={{ backgroundColor: colors.accent, borderColor: colors.outline }}
+                  className="bg-opacity-50 hover:bg-opacity-75 border text-white font-bold py-1 px-3 rounded transition-colors duration-300"
                 >
                   Choose File...
                 </button>
@@ -405,7 +422,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
             }
           
             if (updated) {
-              output = `Success: '${field}' updated to '${value}'.`;
+              output = <div><span style={{ color: colors.text }}>Success:</span> {`'${field}' updated to '${value}'.`}</div>;
             } else {
               const validFields = [...Object.keys(personalFieldMap), ...Object.keys(contactFieldMap)];
               let bestMatch: string | null = null;
@@ -423,7 +440,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
                 output = (
                   <div>
                     <p>Error: Invalid field '{field}'.</p>
-                    <p>Try this: <span className="text-white block mt-1">{`set ${bestMatch} ${value}`}</span></p>
+                    <p><span style={{ color: colors.text }}>Try this:</span> <span className="font-semibold block mt-1" style={{ color: colors.text }}>{`set ${bestMatch} ${value}`}</span></p>
                   </div>
                 );
               } else {
@@ -438,15 +455,15 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
             if (!target || !color) {
               output = (
                 <div>
-                  <p>Usage: customize &lt;target&gt; &lt;color&gt;</p>
-                  <p>Example: customize outline hotpink</p>
-                  <p>Available targets: {validTargets.join(', ')}</p>
+                  <p><span style={{ color: colors.text }}>Usage:</span> customize &lt;target&gt; &lt;color&gt;</p>
+                  <p><span style={{ color: colors.text }}>Example:</span> customize outline hotpink</p>
+                  <p><span style={{ color: colors.text }}>Targets:</span> {validTargets.join(', ')}</p>
                   <p>Color can be a name (e.g., red), hex (e.g., #FF0000), or rgb.</p>
                 </div>
               );
             } else if (validTargets.includes(target.toLowerCase())) {
               onCustomize(target.toLowerCase() as keyof Customization, color);
-              output = `Success: '${target}' color set to '${color}'.`;
+              output = <div><span style={{ color: colors.text }}>Success:</span> {`'${target}' color set to '${color}'.`}</div>;
             } else {
               output = `Error: Invalid target '${target}'. Available targets: ${validTargets.join(', ')}.`;
             }
@@ -455,7 +472,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
           case 'ipconfig':
             output = (
               <div>
-                <p>Network Interface Card:</p>
+                <p style={{ color: colors.text }}>Network Interface Card:</p>
                 <p className="pl-4">IPv4 Address: 192.168.1.101</p>
                 <p className="pl-4">Subnet Mask: 255.255.255.0</p>
                 <p className="pl-4">Default Gateway: 192.168.1.1</p>
@@ -471,7 +488,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
             const host = args[0] || 'localhost';
             output = (
               <div>
-                <p>Pinging {host} with 32 bytes of data:</p>
+                <p style={{ color: colors.text }}>Pinging {host} with 32 bytes of data:</p>
                 <p>Reply from {host}: bytes=32 time=1ms TTL=128</p>
                 <p>Reply from {host}: bytes=32 time=1ms TTL=128</p>
                 <p>Reply from {host}: bytes=32 time=1ms TTL=128</p>
@@ -519,7 +536,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
             output = (
                <div>
                    <p>{`Error: command not found: ${command}`}</p>
-                   <p>{`Did you mean: `}<span className="text-white">{suggestion}{remainingArgs ? ' ' + remainingArgs : ''}</span>{`?`}</p>
+                   <p><span style={{ color: colors.text }}>{`Did you mean: `}</span><span className="font-semibold" style={{ color: colors.text }}>{suggestion}{remainingArgs ? ' ' + remainingArgs : ''}</span>{`?`}</p>
                </div>
             );
         } else {
@@ -529,7 +546,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
     
     newHistory.push({ type: 'output', content: output });
     setHistory(prev => [...prev, ...newHistory]);
-  }, [data, setData, userName, onCustomize, colors.link]);
+  }, [data, setData, userName, onCustomize]);
 
   useEffect(() => {
     processCommand('whoami');
@@ -583,7 +600,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
 
           if (line.type === 'output') {
             return (
-              <div key={index} className="mb-2" style={{ color: 'white' }}>
+              <div key={index} className="mb-2 text-white">
                 {content}
               </div>
             );
