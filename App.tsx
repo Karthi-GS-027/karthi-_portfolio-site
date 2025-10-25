@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import IDCard from './components/IDCard';
 import Terminal from './components/Terminal';
 import Modal from './components/Modal';
+import InterviewForm from './components/InterviewForm';
 import type { PortfolioData } from './types';
 
 const initialPortfolioData: PortfolioData = {
@@ -42,25 +43,46 @@ const initialPortfolioData: PortfolioData = {
 
 const App: React.FC = () => {
   const [portfolioData, setPortfolioData] = useState<PortfolioData>(initialPortfolioData);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalState, setModalState] = useState<'closed' | 'form' | 'success'>('closed');
+
+  const handleFormSubmit = () => {
+    setModalState('success');
+  };
+  
+  const closeModal = () => {
+    setModalState('closed');
+  };
+
+  useEffect(() => {
+    if (modalState === 'success') {
+      const timer = setTimeout(() => {
+        closeModal();
+      }, 3000); // Auto-close after 3 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [modalState]);
 
   return (
     <>
       <main className="bg-black text-green-400 h-screen font-mono flex flex-col md:flex-row md:items-center overflow-hidden">
         <div className="w-full md:w-2/5 flex items-center justify-center p-4 md:p-8">
-          <IDCard data={portfolioData} onInviteClick={() => setIsModalOpen(true)} />
+          <IDCard data={portfolioData} onInviteClick={() => setModalState('form')} />
         </div>
         <div className="hidden md:block w-px bg-green-400/50"></div>
         <div className="w-full md:w-3/5 p-4 md:p-8 flex items-center justify-center">
           <Terminal data={portfolioData} setData={setPortfolioData} />
         </div>
       </main>
-      {isModalOpen && (
-        <Modal onClose={() => setIsModalOpen(false)}>
-          <div className="text-center p-4">
-            <h2 className="text-2xl font-bold text-white mb-4">Success!</h2>
-            <p className="text-green-300">Invitation Sent Successfully!</p>
-          </div>
+      {modalState !== 'closed' && (
+        <Modal onClose={closeModal}>
+          {modalState === 'form' && <InterviewForm onSubmit={handleFormSubmit} />}
+          {modalState === 'success' && (
+            <div className="text-center p-8">
+              <h2 className="text-2xl font-bold text-white mb-4">Success!</h2>
+              <p className="text-green-300">Invitation Sent Successfully!</p>
+              <p className="text-xs text-green-500 mt-4 animate-pulse">This window will close automatically.</p>
+            </div>
+          )}
         </Modal>
       )}
     </>
