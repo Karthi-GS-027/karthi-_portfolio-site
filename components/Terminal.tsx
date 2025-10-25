@@ -86,7 +86,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
 
     const fullCommand = commandStr.trim().toLowerCase();
 
-    switch (fullCommand) {
+    switch (command) {
       case 'karthi':
         output = "That's my name! To see what you can do, type 'help'.";
         break;
@@ -114,6 +114,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
               <li><span className="text-white w-28 inline-block">contact</span>- Contact info.</li>
             </ul>
             <p className="mt-2">For a full list of all commands, type '<span className="text-white">help me</span>'.</p>
+            <p className="mt-1">For detailed instructions, type '<span className="text-white">guide customize</span>'.</p>
           </div>
         );
         break;
@@ -128,6 +129,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
             <li><span className="text-white w-28 inline-block">experience</span>- Work experience.</li>
             <li><span className="text-white w-28 inline-block">skills</span>- Technical skills.</li>
             <li><span className="text-white w-28 inline-block">set</span>- Edit ID card data.</li>
+            <li><span className="text-white w-28 inline-block">guide</span>- Get help on commands.</li>
             <li><span className="text-white w-28 inline-block">upload</span>- Upload a picture.</li>
             <li><span className="text-white w-28 inline-block">download</span>- Download resume.</li>
             <li><span className="text-white w-28 inline-block">clear</span>- Clear screen.</li>
@@ -271,6 +273,49 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
         output = 'Thank you for visiting. Have a great day!';
         break;
         
+      case 'guide':
+        const topic = args[0];
+        if (!topic) {
+            output = "This command provides detailed instructions for other features. Usage: guide <command>. Try 'guide customize' or 'guide set'.";
+        } else if (topic.toLowerCase() === 'customize') {
+            output = (
+                <div>
+                    <p className="text-white font-bold">-- Customization Guide --</p>
+                    <p>You can change the color scheme of this portfolio using the 'customize' command.</p>
+                    <p className="mt-2">Usage: <span className="text-white">customize &lt;target&gt; &lt;color&gt;</span></p>
+                    <p className="mt-2">Targets available:</p>
+                    <ul className="list-disc list-inside pl-4">
+                        <li><span className="text-white w-20 inline-block">outline:</span> The border color of all elements.</li>
+                        <li><span className="text-white w-20 inline-block">text:</span> The main text color.</li>
+                        <li><span className="text-white w-20 inline-block">link:</span> The color of links and secondary text.</li>
+                        <li><span className="text-white w-20 inline-block">accent:</span> The color for buttons and highlights.</li>
+                    </ul>
+                    <p className="mt-2">Example:</p>
+                    <p className="pl-4"><span className="text-white">customize outline #ff00ff</span> (changes borders to magenta)</p>
+                    <p className="pl-4"><span className="text-white">customize text white</span> (changes text to white)</p>
+                </div>
+            );
+        } else if (topic.toLowerCase() === 'set') {
+             output = (
+                <div>
+                    <p className="text-white font-bold">-- Set Data Guide --</p>
+                    <p>You can edit the information on the ID card in real-time using the 'set' command.</p>
+                    <p className="mt-2">Usage: <span className="text-white">set &lt;field&gt; &lt;new value&gt;</span></p>
+                    <p className="mt-2">Fields available:</p>
+                    <ul className="list-disc list-inside pl-4">
+                         <li>name, title, nationality, dob, gender, status</li>
+                         <li>mobile, email, location</li>
+                    </ul>
+                    <p className="mt-2">Example:</p>
+                    <p className="pl-4"><span className="text-white">set title Lead Developer</span></p>
+                    <p className="pl-4"><span className="text-white">set name John Doe</span></p>
+                </div>
+            );
+        } else {
+            output = `No guide available for '${topic}'. Try 'guide customize' or 'guide set'.`;
+        }
+        break;
+
       default:
         switch(command) {
           case 'upload':
@@ -422,7 +467,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
         const ALL_COMMANDS = [
             'help', 'help me', 'summary', 'contact', 'socials', 'about', 'experience', 'exp', 'skills',
             'set', 'upload', 'download', 'clear', 'whoami', 'ipconfig', 'hostname', 'date',
-            'echo', 'ping', 'ls', 'cat', 'neofetch', 'customize', 'exit', 'karthi'
+            'echo', 'ping', 'ls', 'cat', 'neofetch', 'customize', 'exit', 'karthi', 'guide'
         ];
         let suggestion: string | null = null;
         let minDistance = 3; // Threshold: suggest if distance is 1 or 2
