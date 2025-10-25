@@ -90,7 +90,6 @@ const App: React.FC = () => {
     <>
       <main 
         className="bg-black h-screen font-mono flex flex-col md:flex-row md:items-center overflow-hidden"
-        style={{ color: customColors.text }}
       >
         <div className="w-full md:w-2/5 flex items-center justify-center p-4 md:p-8">
           <IDCard data={portfolioData} onInviteClick={() => setModalState('form')} colors={customColors} />

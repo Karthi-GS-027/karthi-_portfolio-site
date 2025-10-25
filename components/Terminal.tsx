@@ -554,7 +554,12 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
   return (
     <div 
       className="w-full bg-black/80 rounded-lg p-4 text-sm flex flex-col h-[30rem]"
-      style={{ borderColor: colors.outline, borderStyle: 'solid', borderWidth: 2 }}
+      style={{
+        borderColor: colors.outline,
+        borderStyle: 'solid',
+        borderWidth: 2,
+        color: colors.text
+      }}
       onClick={handleTerminalClick}
     >
       <style>{`
@@ -571,15 +576,25 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
         className="hidden"
       />
       <div className="flex-grow overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-        {history.map((line, index) => (
-          <div key={index} className={line.type === 'input' ? '' : 'mb-2'}>
-            {typeof line.content === 'string' ? (
-              <span dangerouslySetInnerHTML={{ __html: line.content }} />
-            ) : (
-              line.content
-            )}
-          </div>
-        ))}
+        {history.map((line, index) => {
+          const content = typeof line.content === 'string'
+            ? <span dangerouslySetInnerHTML={{ __html: line.content }} />
+            : line.content;
+
+          if (line.type === 'output') {
+            return (
+              <div key={index} className="mb-2" style={{ color: 'white' }}>
+                {content}
+              </div>
+            );
+          }
+          
+          return (
+            <div key={index}>
+              {content}
+            </div>
+          );
+        })}
         <div ref={terminalEndRef} />
       </div>
       <div className="flex items-center mt-2 flex-shrink-0">
