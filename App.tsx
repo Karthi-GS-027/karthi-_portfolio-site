@@ -35,9 +35,9 @@ const initialPortfolioData: PortfolioData = {
     '- Provided technical support and training to staff, enhancing their IT proficiency.'
   ],
   education: [
-    'Bachelor of Computer Applications (BCA) - Annamalai University (2017-2020)',
-    'HSC - Government Higher Secondary School, Manalmedu (2015-2017)',
-    'SSLC - Government Higher Secondary School, Manalmedu (2014-2015)'
+    'WebDevelopment Internship - Sai Techno Solution, Coimbatore (2023)',
+    'Post Graduate Diploma in Computer Applications (PGDCA) - Guru Computers, Kuthalam (2022)',
+    'Bachelor’s Degree in Chemistry - Bharathidasan University, Trichy (2017-2020)'
   ],
   languages: [
     'Tamil (Native)',

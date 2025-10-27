@@ -87,7 +87,6 @@ const IDCard: React.FC<IDCardProps> = ({ data, onInviteClick, colors }) => {
           </div>
 
           <div className="mt-4 border-t-2 w-2/3" style={{ borderColor: colors.outline, opacity: 0.5 }}></div>
-           <p className="text-sm mt-4 animate-pulse" style={{ color: colors.accent }}>-- Click or wait to flip --</p>
         </div>
 
         {/* Back Face */}
