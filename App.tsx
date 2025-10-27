@@ -56,7 +56,20 @@ const initialPortfolioData: PortfolioData = {
 };
 
 const App: React.FC = () => {
-  const [portfolioData, setPortfolioData] = useState<PortfolioData>(initialPortfolioData);
+  const [portfolioData, setPortfolioData] = useState<PortfolioData>(() => {
+    const savedPic = localStorage.getItem('profilePicture');
+    if (savedPic) {
+      return {
+        ...initialPortfolioData,
+        personal: {
+          ...initialPortfolioData.personal,
+          'profile_picture_url': savedPic,
+        },
+      };
+    }
+    return initialPortfolioData;
+  });
+
   const [modalState, setModalState] = useState<'closed' | 'form' | 'success'>('closed');
   const [customColors, setCustomColors] = useState<Customization>({
     outline: '#4ade80', // green-400
@@ -85,6 +98,13 @@ const App: React.FC = () => {
       return () => clearTimeout(timer);
     }
   }, [modalState]);
+
+  useEffect(() => {
+    // Don't save the default SVG placeholder
+    if (portfolioData.personal.profile_picture_url && !portfolioData.personal.profile_picture_url.startsWith('data:image/svg+xml')) {
+        localStorage.setItem('profilePicture', portfolioData.personal.profile_picture_url);
+    }
+  }, [portfolioData.personal.profile_picture_url]);
 
   return (
     <>

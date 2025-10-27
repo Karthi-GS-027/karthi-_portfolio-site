@@ -66,7 +66,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
             'profile_picture_url': base64String,
           },
         }));
-        setHistory(prev => [...prev, { type: 'output', content: <div><span style={{ color: colors.text }}>Success:</span> Profile picture updated.</div> }]);
+        setHistory(prev => [...prev, { type: 'output', content: <div><span style={{ color: colors.text }}>Success:</span> Profile picture updated and saved.</div> }]);
       };
       reader.readAsDataURL(file);
     } else if (file) {
@@ -327,7 +327,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
       case 'guide':
         const topic = args[0];
         if (!topic) {
-            output = "This command provides detailed instructions. Usage: guide <command>. Try 'guide customize' or 'guide set'.";
+            output = "This command provides detailed instructions. Usage: guide <command>. Try 'guide customize', 'guide set', or 'guide upload'.";
         } else if (topic.toLowerCase() === 'customize') {
             output = (
                 <div>
@@ -360,7 +360,19 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
                     <p className="pl-4"><span className="font-semibold" style={{ color: colors.text }}>set title Lead Developer</span></p>
                 </div>
             );
-        } else {
+        } else if (topic.toLowerCase() === 'upload') {
+            output = (
+               <div>
+                   <p className="font-bold" style={{ color: colors.text }}>-- Upload Guide --</p>
+                   <p>Update the ID card profile picture with your own image.</p>
+                   <p className="mt-2"><span style={{ color: colors.text }}>Usage:</span> <span className="font-semibold" style={{ color: colors.text }}>upload picture</span></p>
+                   <p className="mt-2">This command will open a file selection dialog. Choose an image to upload.</p>
+                   <p>The uploaded image is saved in your browser's local storage and will persist on your next visit.</p>
+                   <p className="mt-2"><span style={{ color: colors.text }}>To reset to the default picture, type:</span></p>
+                   <p className="pl-4"><span className="font-semibold" style={{ color: colors.text }}>upload reset</span></p>
+               </div>
+           );
+       } else {
             output = `No guide available for '${topic}'. Try 'guide customize' or 'guide set'.`;
         }
         break;
@@ -378,8 +390,19 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
                   Choose File...
                 </button>
               );
+            } else if (args[0]?.toLowerCase() === 'reset') {
+              localStorage.removeItem('profilePicture');
+              const defaultPic = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjM1IiByPSIyMCIgZmlsbD0iIzRhZGU4MCIvPjxwYXRoIGQ9Ik0xNSA5NSBDIDE1IDc1LCA4NSA3NSwgODUgOTUiIGZpbGw9IiM0YWRlODAiLz48L3N2Zz4=';
+              setData(prevData => ({
+                ...prevData,
+                personal: {
+                  ...prevData.personal,
+                  'profile_picture_url': defaultPic,
+                },
+              }));
+              output = <div><span style={{ color: colors.text }}>Success:</span> Profile picture reset to default.</div>;
             } else {
-              output = `Usage: upload picture`;
+              output = `Usage: upload <picture|reset>`;
             }
             break;
           
@@ -546,7 +569,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
     
     newHistory.push({ type: 'output', content: output });
     setHistory(prev => [...prev, ...newHistory]);
-  }, [data, setData, userName, onCustomize]);
+  }, [data, setData, userName, onCustomize, colors.text]);
 
   useEffect(() => {
     processCommand('whoami');
