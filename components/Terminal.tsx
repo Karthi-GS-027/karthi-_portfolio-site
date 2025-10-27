@@ -6,6 +6,7 @@ interface TerminalProps {
   setData: React.Dispatch<React.SetStateAction<PortfolioData>>;
   colors: Customization;
   onCustomize: (target: keyof Customization, color: string) => void;
+  onLogin: () => void;
 }
 
 const levenshteinDistance = (a: string, b: string): number => {
@@ -37,7 +38,7 @@ const levenshteinDistance = (a: string, b: string): number => {
 };
 
 
-const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize }) => {
+const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize, onLogin }) => {
   const [history, setHistory] = useState<OutputLine[]>([]);
   const [input, setInput] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -159,6 +160,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
               <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>cat</span>- View "file" contents.</li>
               <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>neofetch</span>- System info.</li>
               <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>clear</span>- Clear the screen.</li>
+              <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>login</span>- Access admin panel.</li>
               <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>exit</span>- Sign off.</li>
             </ul>
           </div>
@@ -324,6 +326,11 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
         output = 'Thank you for visiting. Have a great day!';
         break;
         
+      case 'login':
+        onLogin();
+        output = 'Entering Super Admin mode...';
+        break;
+
       case 'guide':
         const topic = args[0];
         if (!topic) {
@@ -366,10 +373,28 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
                    <p className="font-bold" style={{ color: colors.text }}>-- Upload Guide --</p>
                    <p>Update the ID card profile picture with your own image.</p>
                    <p className="mt-2"><span style={{ color: colors.text }}>Usage:</span> <span className="font-semibold" style={{ color: colors.text }}>upload picture</span></p>
-                   <p className="mt-2">This command will open a file selection dialog. Choose an image to upload.</p>
-                   <p>The uploaded image is saved in your browser's local storage and will persist on your next visit.</p>
+                   <p className="mt-2">This command opens a file dialog. The selected image is saved in your browser and will persist on your next visit.</p>
                    <p className="mt-2"><span style={{ color: colors.text }}>To reset to the default picture, type:</span></p>
                    <p className="pl-4"><span className="font-semibold" style={{ color: colors.text }}>upload reset</span></p>
+
+                   <p className="font-bold mt-4" style={{ color: colors.accent }}>-- For Developers: Changing the Default Picture --</p>
+                   <p>To permanently change the default image in the code:</p>
+                   <ol className="list-decimal list-inside pl-2 mt-1 space-y-1">
+                       <li>
+                           <strong>Add your image to the project:</strong> Place your picture in a `public` or `assets/images` folder (e.g., `public/myphoto.jpg`).
+                       </li>
+                       <li>
+                           <strong>Update the code:</strong> Open `App.tsx` and find the `initialPortfolioData` object. Change the `profile_picture_url` value:
+                           <pre className="bg-gray-800/50 p-2 rounded mt-1 text-xs whitespace-pre-wrap">{`personal: {
+  // ...
+  'profile_picture_url': '/myphoto.jpg',
+}`}</pre>
+                       </li>
+                       <li>
+                           <strong>(Optional) Use a URL:</strong> You can also use a direct URL from the web.
+                           <pre className="bg-gray-800/50 p-2 rounded mt-1 text-xs whitespace-pre-wrap">{`'profile_picture_url': 'https://avatars.githubusercontent.com/u/yourid'`}</pre>
+                       </li>
+                   </ol>
                </div>
            );
        } else {
@@ -392,7 +417,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
               );
             } else if (args[0]?.toLowerCase() === 'reset') {
               localStorage.removeItem('profilePicture');
-              const defaultPic = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjM1IiByPSIyMCIgZmlsbD0iIzRhZGU4MCIvPjxwYXRoIGQ9Ik0xNSA5NSBDIDE1IDc1LCA4NSA3NSwgODUgOTUiIGZpbGw9IiM0YWRlODAiLz48L3N2Zz4=';
+              const defaultPic = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy5zdmcyMDAwLm9yZyIgdmlld0JveD0iMCAwIDEwMCAxMDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjIwIiBmaWxsPSIjNGFkZTgwIi8+PHBhdGggZD0iTTE1IDk1IEMgMTUgNzUsIDg1IDc1LCA4NSA5NSIgZmlsbD0iIzRhZGU4MCIvPjwvc3ZnPg==';
               setData(prevData => ({
                 ...prevData,
                 personal: {
@@ -539,7 +564,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
     if (output === null) {
         const ALL_COMMANDS = [
             'help', 'help me', 'summary', 'contact', 'socials', 'about', 'experience', 'exp', 'skills',
-            'education', 'languages',
+            'education', 'languages', 'login',
             'set', 'upload', 'download', 'clear', 'whoami', 'ipconfig', 'hostname', 'date',
             'echo', 'ping', 'ls', 'cat', 'neofetch', 'customize', 'exit', 'karthi', 'guide'
         ];
@@ -569,7 +594,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize 
     
     newHistory.push({ type: 'output', content: output });
     setHistory(prev => [...prev, ...newHistory]);
-  }, [data, setData, userName, onCustomize, colors.text]);
+  }, [data, setData, userName, onCustomize, onLogin, colors.text, colors.accent, colors.link]);
 
   useEffect(() => {
     processCommand('whoami');

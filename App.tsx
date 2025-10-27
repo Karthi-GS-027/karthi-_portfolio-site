@@ -3,6 +3,7 @@ import IDCard from './components/IDCard';
 import Terminal from './components/Terminal';
 import Modal from './components/Modal';
 import InterviewForm from './components/InterviewForm';
+import AdminPage from './components/AdminPage';
 import type { PortfolioData, Customization } from './types';
 
 const initialPortfolioData: PortfolioData = {
@@ -71,6 +72,7 @@ const App: React.FC = () => {
   });
 
   const [modalState, setModalState] = useState<'closed' | 'form' | 'success'>('closed');
+  const [isAdminMode, setIsAdminMode] = useState(false);
   const [customColors, setCustomColors] = useState<Customization>({
     outline: '#4ade80', // green-400
     text: '#4ade80',    // green-400
@@ -88,6 +90,14 @@ const App: React.FC = () => {
   
   const closeModal = () => {
     setModalState('closed');
+  };
+  
+  const handleLogin = () => {
+    setIsAdminMode(true);
+  };
+  
+  const handleLogout = () => {
+    setIsAdminMode(false);
   };
 
   useEffect(() => {
@@ -119,7 +129,7 @@ const App: React.FC = () => {
             style={{ backgroundColor: customColors.outline, opacity: 0.5 }}
         ></div>
         <div className="w-full md:w-3/5 p-4 md:p-8 flex items-center justify-center">
-          <Terminal data={portfolioData} setData={setPortfolioData} colors={customColors} onCustomize={handleCustomize} />
+          <Terminal data={portfolioData} setData={setPortfolioData} colors={customColors} onCustomize={handleCustomize} onLogin={handleLogin} />
         </div>
       </main>
       {modalState !== 'closed' && (
@@ -134,6 +144,7 @@ const App: React.FC = () => {
           )}
         </Modal>
       )}
+      {isAdminMode && <AdminPage onLogout={handleLogout} colors={customColors} data={portfolioData} setData={setPortfolioData} />}
     </>
   );
 };
