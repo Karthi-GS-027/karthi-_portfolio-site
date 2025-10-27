@@ -12,8 +12,6 @@ const AdminPage: React.FC<AdminPageProps> = ({ onLogout, colors, data, setData }
   const [editedData, setEditedData] = useState<PortfolioData>(JSON.parse(JSON.stringify(data)));
   const [isDragging, setIsDragging] = useState(false);
   const [newSkills, setNewSkills] = useState<Record<string, string>>({});
-  const [showCodeModal, setShowCodeModal] = useState(false);
-  const [generatedCode, setGeneratedCode] = useState('');
   const [resumeFileName, setResumeFileName] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const resumeInputRef = useRef<HTMLInputElement>(null);
@@ -105,26 +103,15 @@ const AdminPage: React.FC<AdminPageProps> = ({ onLogout, colors, data, setData }
     }));
   };
 
-  const handleApply = () => {
-    setData(editedData); // Update live view immediately
-    const codeString = `const initialPortfolioData: PortfolioData = ${JSON.stringify(editedData, null, 2)};`;
-    setGeneratedCode(codeString);
-    setShowCodeModal(true);
+  const handleApplyAndClose = () => {
+    setData(editedData); // This triggers the save in App.tsx and updates the live view
+    onLogout(); // Close the admin panel
   };
   
   const handleCancel = () => {
     onLogout(); // Close without saving
   };
   
-  const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(generatedCode).then(() => {
-      alert('Code copied to clipboard!');
-    }, (err) => {
-      console.error('Could not copy text: ', err);
-      alert('Failed to copy code.');
-    });
-  };
-
   const renderSectionInputs = (section: 'personal' | 'contact_info') => (
     <div className="space-y-4">
       {Object.entries(editedData[section])
@@ -242,38 +229,14 @@ const AdminPage: React.FC<AdminPageProps> = ({ onLogout, colors, data, setData }
                 Cancel
             </button>
             <button
-                onClick={handleApply}
+                onClick={handleApplyAndClose}
                 className="bg-green-500/50 hover:bg-green-500/75 text-white font-bold py-2 px-6 rounded transition-colors duration-300"
             >
-                Apply Changes
+                Save & Close
             </button>
           </div>
         </div>
       </div>
-      
-      {showCodeModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[60] p-4">
-           <div className="bg-gray-900 rounded-lg w-full max-w-2xl border-2 flex flex-col" style={{ borderColor: colors.outline, color: colors.text, maxHeight: '80vh' }}>
-                <div className="p-4 border-b-2" style={{ borderColor: colors.outline, opacity: 0.5 }}>
-                    <h2 className="text-xl font-bold" style={{ color: colors.accent }}>Update Your Code</h2>
-                    <p className="text-sm mt-1" style={{color: colors.link}}>To make your changes permanent, replace the `initialPortfolioData` object in your `App.tsx` file with the code below.</p>
-                </div>
-                <pre className="p-4 overflow-auto flex-grow text-xs bg-black/30">
-                    <code>
-                        {generatedCode}
-                    </code>
-                </pre>
-                <div className="p-4 border-t-2 flex justify-between items-center" style={{ borderColor: colors.outline, opacity: 0.5 }}>
-                    <button onClick={handleCopyToClipboard} className="bg-blue-500/50 hover:bg-blue-500/75 text-white font-bold py-2 px-4 rounded">
-                        Copy Code
-                    </button>
-                    <button onClick={onLogout} className="text-white hover:opacity-80 font-bold py-2 px-4 rounded">
-                        Close
-                    </button>
-                </div>
-           </div>
-        </div>
-      )}
     </>
   );
 };

@@ -145,6 +145,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize,
                <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>set</span>- Edit ID card data.</li>
                <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>customize</span>- Change UI colors.</li>
                <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>upload</span>- Upload new picture.</li>
+               <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>reset</span>- Reset portfolio data.</li>
                <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>guide</span>- Get command help.</li>
             </ul>
             
@@ -338,7 +339,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize,
       case 'guide':
         const topic = args[0];
         if (!topic) {
-            output = "This command provides detailed instructions. Usage: guide <command>. Try 'guide customize', 'guide set', or 'guide upload'.";
+            output = "This command provides detailed instructions. Usage: guide <command>. Try 'guide customize', 'guide set', 'guide upload', or 'guide reset'.";
         } else if (topic.toLowerCase() === 'customize') {
             output = (
                 <div>
@@ -401,8 +402,36 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize,
                    </ol>
                </div>
            );
+       } else if (topic.toLowerCase() === 'reset') {
+            output = (
+               <div>
+                   <p className="font-bold" style={{ color: colors.text }}>-- Reset Guide --</p>
+                   <p>Restore data to its original state.</p>
+                   <p className="mt-2"><span style={{ color: colors.text }}>Usage:</span> <span className="font-semibold" style={{ color: colors.text }}>reset &lt;target&gt;</span></p>
+                    <p className="mt-2"><span style={{ color: colors.text }}>Targets:</span></p>
+                   <ul className="list-disc list-inside pl-4">
+                       <li><span className="font-semibold w-24 inline-block" style={{ color: colors.text }}>portfolio:</span> Resets all data (personal info, skills, picture, resume) to the original version and reloads the page.</li>
+                   </ul>
+                   <p className="mt-2"><strong style={{ color: '#fb923c' }}>Warning: This action cannot be undone.</strong></p>
+
+                   <p className="font-bold mt-2" style={{ color: colors.text }}>Related command:</p>
+                   <p className="pl-4">Use '<span className="font-semibold" style={{ color: colors.text }}>upload reset</span>' to only reset the profile picture.</p>
+               </div>
+           );
        } else {
-            output = `No guide available for '${topic}'. Try 'guide customize' or 'guide set'.`;
+            output = `No guide available for '${topic}'. Try 'guide customize', 'guide set', 'guide upload', or 'guide reset'.`;
+        }
+        break;
+
+      case 'reset':
+        if (args[0]?.toLowerCase() === 'portfolio') {
+          localStorage.removeItem('portfolioData');
+          output = 'Portfolio data has been reset. Reloading...';
+          setHistory(prev => [...prev, { type: 'input', content: `${userName}> ${commandStr}` }, {type: 'output', content: output}]);
+          setTimeout(() => window.location.reload(), 1000);
+          return;
+        } else {
+            output = `Usage: reset portfolio. This will clear all local changes and restore the default portfolio.`
         }
         break;
 
@@ -420,7 +449,6 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize,
                 </button>
               );
             } else if (args[0]?.toLowerCase() === 'reset') {
-              localStorage.removeItem('profilePicture');
               const defaultPic = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy5zdmcyMDAwLm9yZyIgdmlld0JveD0iMCAwIDEwMCAxMDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjIwIiBmaWxsPSIjNGFkZTgwIi8+PHBhdGggZD0iTTE1IDk1IEMgMTUgNzUsIDg1IDc1LCA4NSA5NSIgZmlsbD0iIzRhZGU4MCIvPjwvc3ZnPg==';
               setData(prevData => ({
                 ...prevData,
@@ -568,7 +596,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize,
     if (output === null) {
         const ALL_COMMANDS = [
             'help', 'help me', 'summary', 'contact', 'socials', 'about', 'experience', 'exp', 'skills',
-            'education', 'languages', 'login',
+            'education', 'languages', 'login', 'reset',
             'set', 'upload', 'download', 'clear', 'whoami', 'ipconfig', 'hostname', 'date',
             'echo', 'ping', 'ls', 'cat', 'neofetch', 'customize', 'exit', 'karthi', 'guide'
         ];
