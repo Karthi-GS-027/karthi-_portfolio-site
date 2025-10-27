@@ -255,13 +255,17 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize,
         break;
       
       case 'download':
-        const link = document.createElement('a');
-        link.href = 'data:application/pdf;base64,';
-        link.download = 'Karthi-Resume.pdf';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        output = <div><span style={{ color: colors.text }}>Success:</span> Download initiated for Karthi-Resume.pdf...</div>;
+        if (data.resume_base64 && data.resume_base64.startsWith('data:application/pdf;base64,')) {
+            const link = document.createElement('a');
+            link.href = data.resume_base64;
+            link.download = 'Karthi-Resume.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            output = <div><span style={{ color: colors.text }}>Success:</span> Download initiated for Karthi-Resume.pdf...</div>;
+        } else {
+            output = <div><span style={{ color: '#f97316' }}>Warning:</span> No resume has been uploaded. Please use the admin panel to upload a PDF resume.</div>;
+        }
         break;
       
       case 'clear':

@@ -14,7 +14,9 @@ const AdminPage: React.FC<AdminPageProps> = ({ onLogout, colors, data, setData }
   const [newSkills, setNewSkills] = useState<Record<string, string>>({});
   const [showCodeModal, setShowCodeModal] = useState(false);
   const [generatedCode, setGeneratedCode] = useState('');
+  const [resumeFileName, setResumeFileName] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const resumeInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     // Sync local state if the original data changes externally
@@ -37,6 +39,20 @@ const AdminPage: React.FC<AdminPageProps> = ({ onLogout, colors, data, setData }
         }));
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleResumeFileChange = (file: File | null) => {
+    if (file && file.type === 'application/pdf') {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setEditedData(prevData => ({ ...prevData, resume_base64: base64String }));
+        setResumeFileName(file.name);
+      };
+      reader.readAsDataURL(file);
+    } else if (file) {
+      alert('Please select a valid PDF file for the resume.');
     }
   };
 
@@ -160,6 +176,17 @@ const AdminPage: React.FC<AdminPageProps> = ({ onLogout, colors, data, setData }
                     <p>Drag & drop an image here</p>
                     <p className="text-xs" style={{ color: colors.text, opacity: 0.7 }}>or click to select a file</p>
                   </div>
+                </div>
+                 <div>
+                  <h2 className="text-xl font-bold mb-4" style={{ color: colors.link }}>Resume (PDF)</h2>
+                  <input type="file" ref={resumeInputRef} className="hidden" onChange={e => handleResumeFileChange(e.target.files?.[0] ?? null)} accept="application/pdf" />
+                  <button
+                    onClick={() => resumeInputRef.current?.click()}
+                    className="w-full bg-blue-500/50 hover:bg-blue-500/75 text-white font-bold py-2 px-4 rounded transition-colors duration-300"
+                  >
+                    Upload New Resume
+                  </button>
+                  {resumeFileName && <p className="text-center mt-2 text-sm" style={{color: colors.link}}>File selected: {resumeFileName}</p>}
                 </div>
                 <div>
                   <h2 className="text-xl font-bold mb-4" style={{ color: colors.link }}>Personal Details</h2>

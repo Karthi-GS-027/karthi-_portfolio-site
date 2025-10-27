@@ -22,6 +22,7 @@ export interface PortfolioData {
   education: string[];
   languages: string[];
   skills_list: Record<string, string[]>;
+  resume_base64?: string;
 }
 
 export interface OutputLine {
