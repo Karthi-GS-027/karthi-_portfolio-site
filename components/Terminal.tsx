@@ -449,7 +449,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize,
                 </button>
               );
             } else if (args[0]?.toLowerCase() === 'reset') {
-              const defaultPic = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy5zdmcyMDAwLm9yZyIgdmlld0JveD0iMCAwIDEwMCAxMDAiPjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjIwIiBmaWxsPSIjNGFkZTgwIi8+PHBhdGggZD0iTTE1IDk1IEMgMTUgNzUsIDg1IDc1LCA4NSA5NSIgZmlsbD0iIzRhZGU4MCIvPjwvc3ZnPg==';
+              const defaultPic = '/profile-picture.jpg';
               setData(prevData => ({
                 ...prevData,
                 personal: {

@@ -14,7 +14,7 @@ const initialPortfolioData: PortfolioData = {
     'Date of Birth': '17/06/2000',
     'Gender': 'Male',
     'Marital Status': 'Single',
-    'profile_picture_url': 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjM1IiByPSIyMCIgZmlsbD0iIzRhZGU4MCIvPjxwYXRoIGQ9Ik0xNSA5NSBDIDE1IDc1LCA4NSA3NSwgODUgOTUiIGZpbGw9IiM0YWRlODAiLz48L3N2Zz4='
+    'profile_picture_url': '/profile-picture.jpg'
   },
   contact_info: {
     'Mobile': '+91-9361191640',
