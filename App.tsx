@@ -26,33 +26,33 @@ const initialPortfolioData: PortfolioData = {
     'Naukri': 'https://www.naukri.com/mnjuser/profile?id=&altresid'
   },
   experience_log: [
-    'System Administrator, GS-sysnet, Bangalore, Karnataka (May 2024 - Present)',
-    '- Provided IT support for 1000+ users, resolving hardware, software, and network issues with a 95% first-call resolution rate.',
-    '- Troubleshot and resolved hardware, software, and network issues for end-users via phone, email, or in-person.',
-    '- Installed and configured operating systems on new and existing hardware.',
-    '- Managed and maintained the company’s IT infrastructure, including monitoring network performance and implementing improvements.',
-    '- Set up and maintained network and local printers to ensure seamless functionality.',
-    '- Assisted in the setup and configuration of new hardware and software.',
-    '- Provided technical support and training to staff, enhancing their IT proficiency.'
+    'System Administrator, GS-sysnet, Bangalore, Karnataka (10/06/2024 - Present)',
+    '- Providing IT support for 1000+ users, resolving hardware, software, and network issues with a 95% first-call resolution rate.',
+    '- Troubleshooting and resolving hardware, software, and network problems for end-users via phone, email, or in-person.',
+    '- Installing and configuring operating systems on new and existing hardware.',
+    "- Managing and maintaining the company's IT infrastructure, including monitoring network performance and implementing improvements for enhanced efficiency.",
+    '- Setting up and maintaining network and local printers to ensure seamless functionality.',
+    '- Assisting in the setup and configuration of new hardware and software.',
+    '- Providing technical support and training to staff, enhancing their IT proficiency.'
   ],
   education: [
-    'WebDevelopment Internship - Sai Techno Solution, Coimbatore (2023)',
+    'Web Development Internship - Sai Techno Solution, Coimbatore (2023)',
     'Post Graduate Diploma in Computer Applications (PGDCA) - Guru Computers, Kuthalam (2022)',
     'Bachelor’s Degree in Chemistry - Bharathidasan University, Trichy (2017-2020)'
   ],
   languages: [
     'Tamil (Native)',
-    'English (Professional Working Proficiency)'
+    'English (Professional Working Proficiency)',
+    'Kannada (Conversational)'
   ],
   skills_list: {
     'Networking & Protocols': ['TCP/IP', 'DNS', 'DHCP', 'VPN', 'LAN/WAN', 'OSI Model'],
-    'System Administration': ['OS Installation (Windows/Linux, including server OS)', 'Hardware/Software Installation & Troubleshooting'],
-    'Technical Support': ['End-user Training', 'Problem-solving', 'Issue Escalation', 'Outlook Configuration & MS-Office Problem Solving'],
+    'System Administration': ['OS Installation (Windows/Linux)', 'Hardware/Software Installation & Troubleshooting'],
+    'Technical Support': ['End-user Training', 'Problem-solving', 'Issue Escalation'],
+    'O365': ['Outlook Configuration & MS-Office Problem Solving'],
     'Tools & Platforms': ['CRM Software', 'Ticketing Systems', 'Remote Troubleshooting Tools'],
-    'Microsoft 365': ['Configuration and Management'],
     'Printers': ['Printer Configuration & Troubleshooting'],
     'Cloud Computing': ['Basic AWS Knowledge (EC2, S3, IAM)', 'Understanding of Cloud Computing Principles'],
-    'Camera Installation': ['Installation & Configuration'],
   },
   resume_base64: '',
 };
