@@ -9,86 +9,95 @@ import type { PortfolioData, Customization } from './types';
 const initialPortfolioData: PortfolioData = {
   personal: {
     'Name': 'Karthi G',
-    'title': 'System Administrator',
+    'title': 'Senior Frontend Engineer & UI/UX Specialist',
     'Nationality': 'Indian',
-    'Date of Birth': '17/06/2000',
+    'Date of Birth': '1998-05-20',
     'Gender': 'Male',
     'Marital Status': 'Single',
-    'profile_picture_url': '/profile-picture.jpg'
+    'profile_picture_url': '/WhatsApp Image 2025-10-10 at 9.18.15 AM.jpeg',
   },
   contact_info: {
-    'Mobile': '+91-9361191640',
+    'Mobile': '+91 9791165688',
     'Email': 'gkarthi.ui@gmail.com',
-    'Location': 'Mayiladuthurai, Tamil Nadu, India'
+    'Location': 'Chennai, India',
   },
   socials: {
-    'LinkedIn': 'https://www.linkedin.com/in/karthi-g17/',
-    'Naukri': 'https://www.naukri.com/mnjuser/profile?id=&altresid'
+    'LinkedIn': 'https://www.linkedin.com/in/karthi-g-76b360294/',
+    'Naukri': 'https://www.naukri.com/mnjuser/profile',
   },
   experience_log: [
-    'System Administrator, GS-sysnet, Bangalore, Karnataka (10/06/2024 - Present)',
-    '- Providing IT support for 1000+ users, resolving hardware, software, and network issues with a 95% first-call resolution rate.',
-    '- Troubleshooting and resolving hardware, software, and network problems for end-users via phone, email, or in-person.',
-    '- Installing and configuring operating systems on new and existing hardware.',
-    "- Managing and maintaining the company's IT infrastructure, including monitoring network performance and implementing improvements for enhanced efficiency.",
-    '- Setting up and maintaining network and local printers to ensure seamless functionality.',
-    '- Assisting in the setup and configuration of new hardware and software.',
-    '- Providing technical support and training to staff, enhancing their IT proficiency.'
+    "Virtusa - ( Jan 2024 - Present )",
+    "- Senior Consultant",
+    "Cognizant Technology Solutions - ( Jun 2021 - Dec 2023 )",
+    "- Programmer Analyst",
+    "Codea Technologies - ( Jun 2019 - May 2021 )",
+    "- Software Developer"
   ],
   education: [
-    'Web Development Internship - Sai Techno Solution, Coimbatore (2023)',
-    'Post Graduate Diploma in Computer Applications (PGDCA) - Guru Computers, Kuthalam (2022)',
-    'Bachelor’s Degree in Chemistry - Bharathidasan University, Trichy (2017-2020)'
+    "B.E in Computer Science from Anna University (2015-2019)",
+    "HSC from Govt. Hr. Sec. School (2014-2015)",
   ],
-  languages: [
-    'Tamil (Native)',
-    'English (Professional Working Proficiency)',
-    'Kannada (Conversational)'
-  ],
+  languages: ["English", "Tamil"],
   skills_list: {
-    'Networking & Protocols': ['TCP/IP', 'DNS', 'DHCP', 'VPN', 'LAN/WAN', 'OSI Model'],
-    'System Administration': ['OS Installation (Windows/Linux)', 'Hardware/Software Installation & Troubleshooting'],
-    'Technical Support': ['End-user Training', 'Problem-solving', 'Issue Escalation'],
-    'O365': ['Outlook Configuration & MS-Office Problem Solving'],
-    'Tools & Platforms': ['CRM Software', 'Ticketing Systems', 'Remote Troubleshooting Tools'],
-    'Printers': ['Printer Configuration & Troubleshooting'],
-    'Cloud Computing': ['Basic AWS Knowledge (EC2, S3, IAM)', 'Understanding of Cloud Computing Principles'],
+    "Frontend": ["React", "TypeScript", "JavaScript", "HTML5", "CSS3", "Tailwind CSS"],
+    "Backend": ["Node.js", "Express"],
+    "Databases": ["MongoDB", "MySQL"],
+    "Tools": ["Git", "Docker", "Webpack", "Jira"],
   },
   resume_base64: '',
 };
 
+const initialColors: Customization = {
+  outline: '#facc15', // yellow-400
+  text: '#e5e7eb', // gray-200
+  link: '#60a5fa', // blue-400
+  accent: '#f97316', // orange-500
+};
+
 const App: React.FC = () => {
-  const [portfolioData, setPortfolioData] = useState<PortfolioData>(() => {
+  const [data, setData] = useState<PortfolioData>(() => {
     try {
       const savedData = localStorage.getItem('portfolioData');
       return savedData ? JSON.parse(savedData) : initialPortfolioData;
     } catch (error) {
-      console.error("Failed to load data from localStorage", error);
+      console.error("Failed to parse portfolio data from localStorage", error);
       return initialPortfolioData;
     }
   });
-
-  const [modalState, setModalState] = useState<'closed' | 'form' | 'success'>('closed');
-  const [isAdminMode, setIsAdminMode] = useState(false);
-  const [customColors, setCustomColors] = useState<Customization>({
-    outline: '#4ade80', // green-400
-    text: '#4ade80',    // green-400
-    link: '#6ee7b7',    // green-300
-    accent: '#22c55e',  // green-500
+  
+  const [colors, setColors] = useState<Customization>(() => {
+    try {
+      const savedColors = localStorage.getItem('portfolioColors');
+      return savedColors ? JSON.parse(savedColors) : initialColors;
+    } catch (error) {
+      console.error("Failed to parse color data from localStorage", error);
+      return initialColors;
+    }
   });
 
+  const [isInterviewModalOpen, setIsInterviewModalOpen] = useState(false);
+  const [isAdminMode, setIsAdminMode] = useState(false);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('portfolioData', JSON.stringify(data));
+    } catch (error) {
+      console.error("Failed to save portfolio data to localStorage", error);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('portfolioColors', JSON.stringify(colors));
+    } catch (error) {
+      console.error("Failed to save color data to localStorage", error);
+    }
+  }, [colors]);
+
   const handleCustomize = (target: keyof Customization, color: string) => {
-    setCustomColors(prev => ({ ...prev, [target]: color }));
+    setColors(prev => ({ ...prev, [target]: color }));
   };
 
-  const handleFormSubmit = () => {
-    setModalState('success');
-  };
-  
-  const closeModal = () => {
-    setModalState('closed');
-  };
-  
   const handleLogin = () => {
     setIsAdminMode(true);
   };
@@ -96,54 +105,40 @@ const App: React.FC = () => {
   const handleLogout = () => {
     setIsAdminMode(false);
   };
-  
-  useEffect(() => {
-    try {
-      localStorage.setItem('portfolioData', JSON.stringify(portfolioData));
-    } catch (error) {
-      console.error("Failed to save data to localStorage", error);
-    }
-  }, [portfolioData]);
-
-  useEffect(() => {
-    if (modalState === 'success') {
-      const timer = setTimeout(() => {
-        closeModal();
-      }, 3000); // Auto-close after 3 seconds
-      return () => clearTimeout(timer);
-    }
-  }, [modalState]);
 
   return (
-    <>
-      <main 
-        className="bg-black h-screen font-mono flex flex-col md:flex-row md:items-center overflow-hidden"
-      >
-        <div className="w-full md:w-2/5 flex items-center justify-center p-4 md:p-8">
-          <IDCard data={portfolioData} onInviteClick={() => setModalState('form')} colors={customColors} />
+    <div className="min-h-screen bg-black text-gray-200 p-4 sm:p-8 relative overflow-hidden">
+      <div 
+        className="absolute inset-0 bg-gray-900/20 animate-pulse-bg"
+        style={{
+          background: `radial-gradient(circle, ${colors.outline}33 0%, transparent 70%)`,
+        }}
+      />
+
+      <header className="text-center mb-8 relative z-10">
+        <h1 className="text-4xl sm:text-5xl font-bold" style={{ color: colors.accent }}>CMD Portfolio Generator</h1>
+        <p className="mt-2 text-sm sm:text-base opacity-80" style={{ color: colors.text }}>
+          An interactive terminal-based portfolio. Type '<span style={{ color: colors.accent, fontWeight: 500 }}>help</span>' to get started.
+        </p>
+      </header>
+
+      <main className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div className="flex justify-center items-center">
+          <IDCard data={data} onInviteClick={() => setIsInterviewModalOpen(true)} colors={colors} />
         </div>
-        <div 
-            className="hidden md:block w-px"
-            style={{ backgroundColor: customColors.outline, opacity: 0.5 }}
-        ></div>
-        <div className="w-full md:w-3/5 p-4 md:p-8 flex items-center justify-center">
-          <Terminal data={portfolioData} setData={setPortfolioData} colors={customColors} onCustomize={handleCustomize} onLogin={handleLogin} />
-        </div>
+        <Terminal data={data} setData={setData} colors={colors} onCustomize={handleCustomize} onLogin={handleLogin} />
       </main>
-      {modalState !== 'closed' && (
-        <Modal onClose={closeModal} colors={customColors}>
-          {modalState === 'form' && <InterviewForm onSubmit={handleFormSubmit} colors={customColors} />}
-          {modalState === 'success' && (
-            <div className="text-center p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">Success!</h2>
-              <p style={{ color: customColors.link }}>Invitation Sent Successfully!</p>
-              <p className="text-xs mt-4 animate-pulse" style={{ color: customColors.accent }}>This window will close automatically.</p>
-            </div>
-          )}
+
+      {isInterviewModalOpen && (
+        <Modal onClose={() => setIsInterviewModalOpen(false)} colors={colors}>
+          <InterviewForm onSubmit={() => setIsInterviewModalOpen(false)} colors={colors} />
         </Modal>
       )}
-      {isAdminMode && <AdminPage onLogout={handleLogout} colors={customColors} data={portfolioData} setData={setPortfolioData} />}
-    </>
+
+      {isAdminMode && (
+        <AdminPage onLogout={handleLogout} colors={colors} data={data} setData={setData} />
+      )}
+    </div>
   );
 };
 

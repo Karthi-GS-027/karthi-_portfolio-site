@@ -449,7 +449,7 @@ const Terminal: React.FC<TerminalProps> = ({ data, setData, colors, onCustomize,
                 </button>
               );
             } else if (args[0]?.toLowerCase() === 'reset') {
-              const defaultPic = '/profile-picture.jpg';
+              const defaultPic = '/WhatsApp Image 2025-10-10 at 9.18.15 AM.jpeg';
               setData(prevData => ({
                 ...prevData,
                 personal: {
