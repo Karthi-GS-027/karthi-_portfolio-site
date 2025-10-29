@@ -14,7 +14,7 @@ const initialPortfolioData: PortfolioData = {
     'Date of Birth': '1998-05-20',
     'Gender': 'Male',
     'Marital Status': 'Single',
-    'profile_picture_url': '/WhatsApp Image 2025-10-10 at 9.18.15 AM.jpeg',
+    'profile_picture_url': './WhatsApp Image 2025-10-10 at 9.18.15 AM.jpeg',
   },
   contact_info: {
     'Mobile': '+91 9791165688',

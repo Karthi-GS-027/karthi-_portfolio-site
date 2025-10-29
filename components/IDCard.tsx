@@ -61,7 +61,7 @@ const IDCard: React.FC<IDCardProps> = ({ data, onInviteClick, colors }) => {
           style={{ ...cardShadow, borderColor: colors.outline, borderWidth: 2 }}
         >
           <img
-            src={data.personal.profile_picture_url || "/WhatsApp Image 2025-10-10 at 9.18.15 AM.jpeg"}
+            src={data.personal.profile_picture_url || "./WhatsApp Image 2025-10-10 at 9.18.15 AM.jpeg"}
             alt="Profile"
             className="w-32 h-32 rounded-full mb-4 object-cover"
             style={{ borderColor: colors.outline, borderWidth: 4 }}
